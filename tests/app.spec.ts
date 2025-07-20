@@ -6,7 +6,7 @@ test.describe('Family Recipes App', () => {
     await expect(page).toHaveTitle(/Family Recipes/);
   });
 
-  test('displays welcome message', async ({ page }) => {
+  test('displays welcome message on home page', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByText('Welcome to Family Recipes')).toBeVisible();
     await expect(page.getByText('Preserve and share your cherished family recipes')).toBeVisible();
@@ -20,12 +20,20 @@ test.describe('Family Recipes App', () => {
 
     await page.goto('/');
     
-    // Check that menu icons are visible on desktop
-    await expect(page.getByRole('button', { name: /menu/i })).not.toBeVisible();
+    // Check that menu button is not visible on desktop
+    await expect(page.locator('[aria-label="menu"]')).not.toBeVisible();
     
     // Check that AppBar is visible
     const appBar = page.locator('header');
     await expect(appBar).toBeVisible();
+    
+    // Navigate to Browse Recipes
+    await page.getByRole('link', { name: /browse recipes/i }).click();
+    await expect(page.getByText('Browse Recipes', { exact: true })).toBeVisible();
+    
+    // Navigate to Weekly Menu
+    await page.getByRole('link', { name: /weekly menu/i }).click();
+    await expect(page.getByText('Weekly Menu Planner')).toBeVisible();
   });
 
   test('mobile menu drawer works', async ({ page, isMobile }) => {
@@ -37,17 +45,16 @@ test.describe('Family Recipes App', () => {
     await page.goto('/');
     
     // Menu button should be visible on mobile
-    const menuButton = page.getByRole('button', { name: /menu/i });
+    const menuButton = page.locator('[aria-label="menu"]');
     await expect(menuButton).toBeVisible();
     
     // Click menu button to open drawer
     await menuButton.click();
     
     // Check drawer menu items
-    await expect(page.getByText('Home')).toBeVisible();
-    await expect(page.getByText('All Recipes')).toBeVisible();
-    await expect(page.getByText('Favorites')).toBeVisible();
-    await expect(page.getByText('Add Recipe')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Browse Recipes' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Weekly Menu' })).toBeVisible();
     
     // Click outside to close drawer
     await page.click('body', { position: { x: 300, y: 100 } });
@@ -56,16 +63,62 @@ test.describe('Family Recipes App', () => {
     await expect(page.getByRole('presentation')).not.toBeVisible();
   });
 
+  test('browse recipes page functionality', async ({ page }) => {
+    await page.goto('/#/recipes');
+    
+    // Check page title
+    await expect(page.getByText('Browse Recipes', { exact: true })).toBeVisible();
+    
+    // Check search functionality
+    const searchInput = page.getByPlaceholder('Search recipes...');
+    await expect(searchInput).toBeVisible();
+    
+    await searchInput.fill('chicken');
+    await expect(page.getByText("Mom's Chicken Soup")).toBeVisible();
+    await expect(page.getByText("Grandma's Apple Pie")).not.toBeVisible();
+  });
+
+  test('recipe detail page displays correctly', async ({ page }) => {
+    await page.goto('/#/recipe/moms-chicken-soup');
+    
+    // Check recipe title
+    await expect(page.getByText("Mom's Chicken Soup", { exact: true })).toBeVisible();
+    
+    // Check sections
+    await expect(page.getByText('Ingredients')).toBeVisible();
+    await expect(page.getByText('Instructions')).toBeVisible();
+    
+    // Check back button
+    await expect(page.getByRole('button', { name: /back/i })).toBeVisible();
+  });
+
+  test('weekly menu planner functionality', async ({ page }) => {
+    await page.goto('/#/weekly-menu');
+    
+    // Check page title
+    await expect(page.getByText('Weekly Menu Planner')).toBeVisible();
+    
+    // Check days of week are displayed
+    await expect(page.getByText('Monday')).toBeVisible();
+    await expect(page.getByText('Tuesday')).toBeVisible();
+    await expect(page.getByText('Sunday')).toBeVisible();
+    
+    // Check meal types
+    await expect(page.getByText('Breakfast').first()).toBeVisible();
+    await expect(page.getByText('Lunch').first()).toBeVisible();
+    await expect(page.getByText('Dinner').first()).toBeVisible();
+  });
+
   test('responsive design adapts to viewport', async ({ page }) => {
     await page.goto('/');
     
     // Test desktop viewport
     await page.setViewportSize({ width: 1200, height: 800 });
-    await expect(page.getByRole('button', { name: /menu/i })).not.toBeVisible();
+    await expect(page.locator('[aria-label="menu"]')).not.toBeVisible();
     
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
-    await expect(page.getByRole('button', { name: /menu/i })).toBeVisible();
+    await expect(page.locator('[aria-label="menu"]')).toBeVisible();
   });
 
   test('app uses Material-UI theme colors', async ({ page }) => {
