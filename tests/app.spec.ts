@@ -20,6 +20,9 @@ test.describe('Family Recipes App', () => {
 
     await page.goto('/');
     
+    // Wait for the page to be fully loaded
+    await page.waitForLoadState('networkidle');
+    
     // Check that menu button is not visible on desktop
     await expect(page.locator('[aria-label="menu"]')).not.toBeVisible();
     
@@ -27,12 +30,18 @@ test.describe('Family Recipes App', () => {
     const appBar = page.locator('header');
     await expect(appBar).toBeVisible();
     
-    // Navigate to Browse Recipes
-    await page.getByRole('link', { name: /browse recipes/i }).click();
+    // Navigate to Browse Recipes (on desktop it's an icon button)
+    await page.getByRole('link', { name: 'Browse Recipes' }).click();
+    await page.waitForLoadState('networkidle');
     await expect(page.getByText('Browse Recipes', { exact: true })).toBeVisible();
     
+    // Navigate back to home
+    await page.getByRole('link', { name: 'Family Recipes' }).click();
+    await page.waitForLoadState('networkidle');
+    
     // Navigate to Weekly Menu
-    await page.getByRole('link', { name: /weekly menu/i }).click();
+    await page.getByRole('link', { name: 'Weekly Menu' }).click();
+    await page.waitForLoadState('networkidle');
     await expect(page.getByText('Weekly Menu Planner')).toBeVisible();
   });
 

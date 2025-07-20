@@ -76,7 +76,11 @@ function AppContent() {
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
-            <ListItemButton component={Link} to={item.path} selected={location.pathname === item.path}>
+            <ListItemButton
+              component={Link}
+              to={item.path}
+              selected={location.pathname === item.path}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
@@ -102,15 +106,15 @@ function AppContent() {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography 
-            variant="h6" 
-            component={Link} 
+          <Typography
+            variant="h6"
+            component={Link}
             to="/"
-            sx={{ 
-              flexGrow: 1, 
-              textDecoration: 'none', 
+            sx={{
+              flexGrow: 1,
+              textDecoration: 'none',
               color: 'inherit',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             Family Recipes
@@ -118,12 +122,13 @@ function AppContent() {
           {!isMobile && (
             <Box sx={{ display: 'flex', gap: 2 }}>
               {menuItems.map((item) => (
-                <IconButton 
-                  key={item.text} 
-                  color="inherit" 
+                <IconButton
+                  key={item.text}
+                  color="inherit"
                   size="large"
                   component={Link}
                   to={item.path}
+                  aria-label={item.text}
                 >
                   {item.icon}
                 </IconButton>
@@ -132,14 +137,10 @@ function AppContent() {
           )}
         </Toolbar>
       </AppBar>
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={toggleDrawer(false)}
-      >
+      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         {drawerContent}
       </Drawer>
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/recipes" element={<BrowseRecipes />} />
