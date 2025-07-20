@@ -8,24 +8,20 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AddIcon from '@mui/icons-material/Add';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
+import { Recipe } from '../data/recipes';
 
 interface RecipeCardProps {
-  title: string;
-  description: string;
-  cookTime: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  imageUrl?: string;
+  recipe: Recipe;
+  onAddToMenu?: (recipe: Recipe) => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({
-  title,
-  description,
-  cookTime,
-  difficulty,
-  imageUrl = 'https://source.unsplash.com/random/400x300/?food'
-}) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
+  const navigate = useNavigate();
+  const { title, description, cookTime, difficulty, imageUrl = 'https://source.unsplash.com/random/400x300/?food' } = recipe;
   const getDifficultyColor = (level: string) => {
     switch (level) {
       case 'Easy': return 'success';
@@ -42,8 +38,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
         height="200"
         image={imageUrl}
         alt={title}
+        sx={{ cursor: 'pointer' }}
+        onClick={() => navigate(`/recipe/${recipe.id}`)}
       />
-      <CardContent sx={{ flexGrow: 1 }}>
+      <CardContent sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate(`/recipe/${recipe.id}`)}>
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
@@ -62,6 +60,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
             size="small"
             color={getDifficultyColor(difficulty)}
           />
+          <Chip
+            label={recipe.category}
+            size="small"
+            variant="outlined"
+          />
         </Box>
       </CardContent>
       <CardActions disableSpacing>
@@ -71,6 +74,15 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
+        {onAddToMenu && (
+          <IconButton 
+            aria-label="add to menu" 
+            onClick={() => onAddToMenu(recipe)}
+            sx={{ marginLeft: 'auto' }}
+          >
+            <AddIcon />
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   );
