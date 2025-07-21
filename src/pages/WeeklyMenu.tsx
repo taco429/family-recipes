@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import { 
-  Container, Typography, Box, Paper, Button, Card, 
-  CardContent, IconButton, Dialog, DialogTitle, DialogContent
+import {
+  Container,
+  Typography,
+  Box,
+  Paper,
+  Button,
+  Card,
+  CardContent,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import PrintIcon from '@mui/icons-material/Print';
-import { Recipe, recipes } from '../data/recipes';
+import { Recipe } from '../data/types';
+import { recipes } from '../data/recipes';
 import RecipeCard from '../components/RecipeCard';
 
 interface DayMenu {
@@ -18,7 +28,7 @@ interface DayMenu {
 const WeeklyMenu: React.FC = () => {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const meals = ['breakfast', 'lunch', 'dinner'] as const;
-  
+
   const [weekMenu, setWeekMenu] = useState<Record<string, DayMenu>>({});
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
@@ -31,18 +41,18 @@ const WeeklyMenu: React.FC = () => {
   };
 
   const handleSelectRecipe = (recipe: Recipe) => {
-    setWeekMenu(prev => ({
+    setWeekMenu((prev) => ({
       ...prev,
       [selectedDay]: {
         ...prev[selectedDay],
-        [selectedMeal]: recipe
-      }
+        [selectedMeal]: recipe,
+      },
     }));
     setDialogOpen(false);
   };
 
   const handleRemoveRecipe = (day: string, meal: 'breakfast' | 'lunch' | 'dinner') => {
-    setWeekMenu(prev => {
+    setWeekMenu((prev) => {
       const newMenu = { ...prev };
       if (newMenu[day]) {
         delete newMenu[day][meal];
@@ -56,8 +66,8 @@ const WeeklyMenu: React.FC = () => {
 
   const getShoppingList = () => {
     const ingredients = new Set<string>();
-    Object.values(weekMenu).forEach(dayMenu => {
-      Object.values(dayMenu).forEach(recipe => {
+    Object.values(weekMenu).forEach((dayMenu) => {
+      Object.values(dayMenu).forEach((recipe) => {
         if (recipe) {
           recipe.ingredients.forEach((ing: string) => ingredients.add(ing));
         }
@@ -73,14 +83,10 @@ const WeeklyMenu: React.FC = () => {
           Weekly Menu Planner
         </Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button 
-            variant="outlined" 
-            startIcon={<PrintIcon />}
-            onClick={() => window.print()}
-          >
+          <Button variant="outlined" startIcon={<PrintIcon />} onClick={() => window.print()}>
             Print Menu
           </Button>
-          <Button 
+          <Button
             variant="contained"
             onClick={() => {
               const list = getShoppingList();
@@ -95,13 +101,13 @@ const WeeklyMenu: React.FC = () => {
       </Box>
 
       <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
-        {days.map(day => (
+        {days.map((day) => (
           <Paper key={day} sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom sx={{ textAlign: 'center' }}>
               {day}
             </Typography>
-            
-            {meals.map(meal => {
+
+            {meals.map((meal) => {
               const recipe = weekMenu[day]?.[meal];
               return (
                 <Card key={meal} sx={{ mb: 1, minHeight: 80 }}>
@@ -110,23 +116,23 @@ const WeeklyMenu: React.FC = () => {
                       {meal.charAt(0).toUpperCase() + meal.slice(1)}
                     </Typography>
                     {recipe ? (
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}
+                      >
                         <Typography variant="body2" sx={{ fontSize: '0.875rem' }}>
                           {recipe.title}
                         </Typography>
-                        <IconButton 
-                          size="small" 
-                          onClick={() => handleRemoveRecipe(day, meal)}
-                        >
+                        <IconButton size="small" onClick={() => handleRemoveRecipe(day, meal)}>
                           <DeleteIcon fontSize="small" />
                         </IconButton>
                       </Box>
                     ) : (
                       <Box sx={{ textAlign: 'center', mt: 1 }}>
-                        <IconButton 
-                          size="small" 
-                          onClick={() => handleAddRecipe(day, meal)}
-                        >
+                        <IconButton size="small" onClick={() => handleAddRecipe(day, meal)}>
                           <AddIcon />
                         </IconButton>
                       </Box>
@@ -139,23 +145,20 @@ const WeeklyMenu: React.FC = () => {
         ))}
       </Box>
 
-      <Dialog 
-        open={dialogOpen} 
-        onClose={() => setDialogOpen(false)}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle>
           Select Recipe for {selectedDay} - {selectedMeal}
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ 
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
-            gap: 2,
-            mt: 2
-          }}>
-            {recipes.map(recipe => (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
+              gap: 2,
+              mt: 2,
+            }}
+          >
+            {recipes.map((recipe) => (
               <Box key={recipe.id} onClick={() => handleSelectRecipe(recipe)}>
                 <RecipeCard recipe={recipe} />
               </Box>
@@ -179,4 +182,4 @@ const WeeklyMenu: React.FC = () => {
   );
 };
 
-export default WeeklyMenu; 
+export default WeeklyMenu;

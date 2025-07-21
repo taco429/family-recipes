@@ -12,7 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
-import { Recipe } from '../data/recipes';
+import { Recipe } from '../data/types';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -21,13 +21,23 @@ interface RecipeCardProps {
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
   const navigate = useNavigate();
-  const { title, description, cookTime, difficulty, imageUrl = 'https://source.unsplash.com/random/400x300/?food' } = recipe;
+  const {
+    title,
+    description,
+    cookTime,
+    difficulty,
+    imageUrl = 'https://source.unsplash.com/random/400x300/?food',
+  } = recipe;
   const getDifficultyColor = (level: string) => {
     switch (level) {
-      case 'Easy': return 'success';
-      case 'Medium': return 'warning';
-      case 'Hard': return 'error';
-      default: return 'default';
+      case 'Easy':
+        return 'success';
+      case 'Medium':
+        return 'warning';
+      case 'Hard':
+        return 'error';
+      default:
+        return 'default';
     }
   };
 
@@ -41,7 +51,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
         sx={{ cursor: 'pointer' }}
         onClick={() => navigate(`/recipe/${recipe.id}`)}
       />
-      <CardContent sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate(`/recipe/${recipe.id}`)}>
+      <CardContent
+        sx={{ flexGrow: 1, cursor: 'pointer' }}
+        onClick={() => navigate(`/recipe/${recipe.id}`)}
+      >
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
@@ -49,22 +62,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
           {description}
         </Typography>
         <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-          <Chip
-            icon={<AccessTimeIcon />}
-            label={cookTime}
-            size="small"
-            variant="outlined"
-          />
-          <Chip
-            label={difficulty}
-            size="small"
-            color={getDifficultyColor(difficulty)}
-          />
-          <Chip
-            label={recipe.category}
-            size="small"
-            variant="outlined"
-          />
+          <Chip icon={<AccessTimeIcon />} label={cookTime} size="small" variant="outlined" />
+          <Chip label={difficulty} size="small" color={getDifficultyColor(difficulty)} />
+          <Chip label={recipe.category} size="small" variant="outlined" />
         </Box>
       </CardContent>
       <CardActions disableSpacing>
@@ -75,8 +75,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
           <ShareIcon />
         </IconButton>
         {onAddToMenu && (
-          <IconButton 
-            aria-label="add to menu" 
+          <IconButton
+            aria-label="add to menu"
             onClick={() => onAddToMenu(recipe)}
             sx={{ marginLeft: 'auto' }}
           >
@@ -88,4 +88,4 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
   );
 };
 
-export default RecipeCard; 
+export default RecipeCard;
