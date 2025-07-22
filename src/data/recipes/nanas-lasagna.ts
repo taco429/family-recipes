@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const nanasLasagna: Recipe = {
   id: 'nanas-lasagna',
-  title: "Classic Meat Lasagna",
+  title: 'Classic Meat Lasagna',
   description:
     'A rich, meaty lasagna with layers of cheese and homemade sauce. Perfect for feeding a crowd.',
   cookTime: '45 min',
   prepTime: '30 min',
   servings: 8,
   difficulty: 'Medium',
+  style: 'Italian',
   category: 'Main Course',
   ingredients: [
     '1 lb ground beef',

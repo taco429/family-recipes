@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const sistersBananaBread: Recipe = {
   id: 'sisters-banana-bread',
-  title: "Moist Banana Bread",
+  title: 'Moist Banana Bread',
   description:
-    'The most incredibly moist banana bread that uses up those overripe bananas perfectly. Sister\'s secret ingredient makes all the difference!',
+    "The most incredibly moist banana bread that uses up those overripe bananas perfectly. Sister's secret ingredient makes all the difference!",
   cookTime: '60 min',
   prepTime: '10 min',
   servings: 12,
   difficulty: 'Easy',
+  style: 'American',
   category: 'Baked Goods',
   ingredients: [
     '3 very ripe bananas, mashed',
@@ -27,7 +28,7 @@ export const sistersBananaBread: Recipe = {
     'In a large mixing bowl, mash the ripe bananas with a fork until smooth.',
     'Mix in melted butter, then stir in sugar, egg, and vanilla.',
     'Sprinkle baking soda and salt over the mixture and stir.',
-    'Add flour and sour cream alternately, mixing just until combined. Don\'t overmix.',
+    "Add flour and sour cream alternately, mixing just until combined. Don't overmix.",
     'Fold in chocolate chips or walnuts if using.',
     'Pour batter into prepared loaf pan and smooth the top.',
     'Bake for 55-65 minutes, or until a toothpick inserted in center comes out clean.',

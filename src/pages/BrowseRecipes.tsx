@@ -8,9 +8,19 @@ const BrowseRecipes: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [difficultyFilter, setDifficultyFilter] = useState('All');
+  const [styleFilter, setStyleFilter] = useState('All');
+  const [sortBy, setSortBy] = useState('title');
 
   const categories = ['All', ...Array.from(new Set(recipes.map((r) => r.category)))];
   const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
+  const styles = ['All', ...Array.from(new Set(recipes.map((r) => r.style))).sort()];
+  const sortOptions = [
+    { value: 'title', label: 'Title' },
+    { value: 'difficulty', label: 'Difficulty' },
+    { value: 'category', label: 'Category' },
+    { value: 'style', label: 'Style' },
+    { value: 'cookTime', label: 'Cook Time' },
+  ];
 
   const filteredRecipes = recipes.filter((recipe) => {
     const matchesSearch =
@@ -18,8 +28,31 @@ const BrowseRecipes: React.FC = () => {
       recipe.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'All' || recipe.category === categoryFilter;
     const matchesDifficulty = difficultyFilter === 'All' || recipe.difficulty === difficultyFilter;
+    const matchesStyle = styleFilter === 'All' || recipe.style === styleFilter;
 
-    return matchesSearch && matchesCategory && matchesDifficulty;
+    return matchesSearch && matchesCategory && matchesDifficulty && matchesStyle;
+  });
+
+  const sortedRecipes = [...filteredRecipes].sort((a, b) => {
+    switch (sortBy) {
+      case 'difficulty':
+        const difficultyOrder = { Easy: 1, Medium: 2, Hard: 3 };
+        return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
+      case 'category':
+        return a.category.localeCompare(b.category);
+      case 'style':
+        return a.style.localeCompare(b.style);
+      case 'cookTime':
+        // Extract numeric value from cook time for sorting
+        const getMinutes = (time: string) => {
+          const match = time.match(/(\d+)/);
+          return match ? parseInt(match[1]) : 0;
+        };
+        return getMinutes(a.cookTime) - getMinutes(b.cookTime);
+      case 'title':
+      default:
+        return a.title.localeCompare(b.title);
+    }
   });
 
   return (
@@ -70,10 +103,38 @@ const BrowseRecipes: React.FC = () => {
             </MenuItem>
           ))}
         </TextField>
+
+        <TextField
+          select
+          label="Style"
+          value={styleFilter}
+          onChange={(e) => setStyleFilter(e.target.value)}
+          sx={{ minWidth: 150 }}
+        >
+          {styles.map((style) => (
+            <MenuItem key={style} value={style}>
+              {style}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        <TextField
+          select
+          label="Sort by"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          sx={{ minWidth: 150 }}
+        >
+          {sortOptions.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
       </Box>
 
       <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-        Found {filteredRecipes.length} recipes
+        Found {sortedRecipes.length} recipes
       </Typography>
 
       <Box
@@ -83,7 +144,7 @@ const BrowseRecipes: React.FC = () => {
           gap: 3,
         }}
       >
-        {filteredRecipes.map((recipe) => (
+        {sortedRecipes.map((recipe) => (
           <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </Box>

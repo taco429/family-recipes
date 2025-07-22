@@ -9,6 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AddIcon from '@mui/icons-material/Add';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +27,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
     description,
     cookTime,
     difficulty,
+    style,
     imageUrl = 'https://source.unsplash.com/random/400x300/?food',
   } = recipe;
   const getDifficultyColor = (level: string) => {
@@ -36,6 +38,23 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
         return 'warning';
       case 'Hard':
         return 'error';
+      default:
+        return 'default';
+    }
+  };
+
+  const getStyleColor = (recipeStyle: string) => {
+    switch (recipeStyle.toLowerCase()) {
+      case 'italian':
+        return 'error';
+      case 'mexican':
+        return 'warning';
+      case 'french':
+        return 'info';
+      case 'american':
+        return 'primary';
+      case 'southern':
+        return 'secondary';
       default:
         return 'default';
     }
@@ -61,9 +80,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
         <Typography variant="body2" color="text.secondary" paragraph>
           {description}
         </Typography>
-        <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
+        <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap' }}>
           <Chip icon={<AccessTimeIcon />} label={cookTime} size="small" variant="outlined" />
           <Chip label={difficulty} size="small" color={getDifficultyColor(difficulty)} />
+          <Chip icon={<RestaurantIcon />} label={style} size="small" color={getStyleColor(style)} />
           <Chip label={recipe.category} size="small" variant="outlined" />
         </Box>
       </CardContent>

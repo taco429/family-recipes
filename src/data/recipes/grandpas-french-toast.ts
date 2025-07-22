@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const grandpasFrenchToast: Recipe = {
   id: 'grandpas-french-toast',
-  title: "Weekend French Toast",
+  title: 'Weekend French Toast',
   description:
     'Thick, custardy French toast that Grandpa made every Saturday morning. The secret is using day-old brioche and his special vanilla custard.',
   cookTime: '15 min',
   prepTime: '10 min',
   servings: 4,
   difficulty: 'Easy',
+  style: 'French',
   category: 'Breakfast',
   ingredients: [
     '8 thick slices day-old brioche or challah bread',
@@ -34,6 +35,6 @@ export const grandpasFrenchToast: Recipe = {
     'Keep cooked slices warm in a 200°F oven while finishing the rest.',
     'Serve immediately topped with butter, maple syrup, and fresh berries.',
     'Dust with powdered sugar just before serving.',
-    'Grandpa\'s tip: The key is not to rush - let the custard really soak in!',
+    "Grandpa's tip: The key is not to rush - let the custard really soak in!",
   ],
 };

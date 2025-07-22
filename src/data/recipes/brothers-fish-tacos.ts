@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const brothersFishTacos: Recipe = {
   id: 'brothers-fish-tacos',
-  title: "Crispy Fish Tacos",
+  title: 'Crispy Fish Tacos',
   description:
     'Fresh and vibrant fish tacos with crispy beer-battered fish, tangy slaw, and a zesty lime crema that tastes like vacation.',
   cookTime: '20 min',
   prepTime: '25 min',
   servings: 4,
   difficulty: 'Medium',
+  style: 'Mexican',
   category: 'Main Course',
   ingredients: [
     '1 lb white fish fillets (mahi-mahi or cod)',
