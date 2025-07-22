@@ -2,7 +2,7 @@ import { Recipe } from '../types';
 
 export const mamasCornbread: Recipe = {
   id: 'mamas-cornbread',
-  title: "Mama's Southern Cornbread",
+  title: "Southern Cornbread",
   description:
     'Golden, slightly sweet cornbread with crispy edges from baking in a cast-iron skillet. Perfect with chili, soup, or just butter and honey.',
   cookTime: '25 min',

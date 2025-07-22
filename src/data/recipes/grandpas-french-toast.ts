@@ -2,7 +2,7 @@ import { Recipe } from '../types';
 
 export const grandpasFrenchToast: Recipe = {
   id: 'grandpas-french-toast',
-  title: "Grandpa's Weekend French Toast",
+  title: "Weekend French Toast",
   description:
     'Thick, custardy French toast that Grandpa made every Saturday morning. The secret is using day-old brioche and his special vanilla custard.',
   cookTime: '15 min',

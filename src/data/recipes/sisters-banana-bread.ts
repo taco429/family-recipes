@@ -2,7 +2,7 @@ import { Recipe } from '../types';
 
 export const sistersBananaBread: Recipe = {
   id: 'sisters-banana-bread',
-  title: "Sister's Moist Banana Bread",
+  title: "Moist Banana Bread",
   description:
     'The most incredibly moist banana bread that uses up those overripe bananas perfectly. Sister\'s secret ingredient makes all the difference!',
   cookTime: '60 min',

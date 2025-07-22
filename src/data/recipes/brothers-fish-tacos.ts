@@ -2,7 +2,7 @@ import { Recipe } from '../types';
 
 export const brothersFishTacos: Recipe = {
   id: 'brothers-fish-tacos',
-  title: "Brother's Crispy Fish Tacos",
+  title: "Crispy Fish Tacos",
   description:
     'Fresh and vibrant fish tacos with crispy beer-battered fish, tangy slaw, and a zesty lime crema that tastes like vacation.',
   cookTime: '20 min',

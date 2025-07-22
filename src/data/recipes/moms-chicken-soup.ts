@@ -2,7 +2,7 @@ import { Recipe } from '../types';
 
 export const momsChickenSoup: Recipe = {
   id: 'moms-chicken-soup',
-  title: "Mom's Chicken Soup",
+  title: "Hearty Chicken Soup",
   description:
     'The ultimate comfort food - a hearty chicken soup with vegetables that cures everything from colds to bad days.',
   cookTime: '30 min',

@@ -2,7 +2,7 @@ import { Recipe } from '../types';
 
 export const cousinsBeefStew: Recipe = {
   id: 'cousins-beef-stew',
-  title: "Cousin's Hearty Beef Stew",
+  title: "Hearty Beef Stew",
   description:
     'A rich and satisfying beef stew that simmers all day, filling the house with incredible aromas and warming hearts on cold days.',
   cookTime: '2 hours 30 min',
