@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const grandmasApplePie: Recipe = {
   id: 'grandmas-apple-pie',
-  title: "Classic Apple Pie",
+  title: 'Classic Apple Pie',
   description:
     'A classic apple pie recipe passed down through generations, featuring a flaky crust and perfectly spiced apple filling.',
   cookTime: '60 min',
   prepTime: '30 min',
   servings: 8,
   difficulty: 'Medium',
+  style: 'American',
   category: 'Dessert',
   ingredients: [
     '2 1/2 cups all-purpose flour',

@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const dadsPancakes: Recipe = {
   id: 'dads-pancakes',
-  title: "Fluffy Buttermilk Pancakes",
+  title: 'Fluffy Buttermilk Pancakes',
   description:
     'Fluffy buttermilk pancakes that are a weekend tradition. The secret is in the technique!',
   cookTime: '20 min',
   prepTime: '10 min',
   servings: 4,
   difficulty: 'Easy',
+  style: 'American',
   category: 'Breakfast',
   ingredients: [
     '2 cups all-purpose flour',

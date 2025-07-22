@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const momsChickenSoup: Recipe = {
   id: 'moms-chicken-soup',
-  title: "Hearty Chicken Soup",
+  title: 'Hearty Chicken Soup',
   description:
     'The ultimate comfort food - a hearty chicken soup with vegetables that cures everything from colds to bad days.',
   cookTime: '30 min',
   prepTime: '15 min',
   servings: 6,
   difficulty: 'Easy',
+  style: 'American',
   category: 'Soup',
   ingredients: [
     '1 whole chicken (3-4 lbs)',

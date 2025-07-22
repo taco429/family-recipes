@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const grandpasChili: Recipe = {
   id: 'grandpas-chili',
-  title: "Award-Winning Chili",
+  title: 'Award-Winning Chili',
   description:
     'This hearty chili recipe has won multiple cook-offs. The secret blend of spices makes all the difference.',
   cookTime: '2 hours',
   prepTime: '20 min',
   servings: 8,
   difficulty: 'Medium',
+  style: 'American',
   category: 'Main Course',
   ingredients: [
     '2 lbs ground beef',

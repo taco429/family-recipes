@@ -2,13 +2,14 @@ import { Recipe } from '../types';
 
 export const auntiesChocolateChipCookies: Recipe = {
   id: 'aunties-chocolate-chip-cookies',
-  title: "Perfect Chocolate Chip Cookies",
+  title: 'Perfect Chocolate Chip Cookies',
   description:
     'Soft, chewy chocolate chip cookies with crispy edges - the perfect balance of textures that made Auntie famous at every bake sale.',
   cookTime: '12 min',
   prepTime: '15 min',
   servings: 36,
   difficulty: 'Easy',
+  style: 'American',
   category: 'Dessert',
   ingredients: [
     '2 1/4 cups all-purpose flour',
