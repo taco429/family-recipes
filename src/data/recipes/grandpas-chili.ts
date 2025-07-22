@@ -2,7 +2,7 @@ import { Recipe } from '../types';
 
 export const grandpasChili: Recipe = {
   id: 'grandpas-chili',
-  title: "Grandpa's Award-Winning Chili",
+  title: "Award-Winning Chili",
   description:
     'This hearty chili recipe has won multiple cook-offs. The secret blend of spices makes all the difference.',
   cookTime: '2 hours',

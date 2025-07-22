@@ -83,15 +83,15 @@ test.describe('Family Recipes App', () => {
     await expect(searchInput).toBeVisible();
     
     await searchInput.fill('chicken');
-    await expect(page.getByText("Mom's Chicken Soup")).toBeVisible();
-    await expect(page.getByText("Grandma's Apple Pie")).not.toBeVisible();
+    await expect(page.getByText("Hearty Chicken Soup", { exact: true })).toBeVisible();
+    await expect(page.getByText("Classic Apple Pie")).not.toBeVisible();
   });
 
   test('recipe detail page displays correctly', async ({ page }) => {
     await page.goto('/#/recipe/moms-chicken-soup');
     
     // Check recipe title
-    await expect(page.getByText("Mom's Chicken Soup", { exact: true })).toBeVisible();
+    await expect(page.getByText("Hearty Chicken Soup", { exact: true })).toBeVisible();
     
     // Check sections
     await expect(page.getByText('Ingredients')).toBeVisible();
