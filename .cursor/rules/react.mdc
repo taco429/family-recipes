@@ -1,0 +1,59 @@
+# React Best Practices
+
+## Component Structure
+- Use functional components with hooks over class components
+- Define component props with TypeScript interfaces ending in `Props`
+- Use React.FC sparingly - prefer explicit function declarations with typed props
+- Keep component files organized: imports, types, component, export
+
+## Hooks and State Management
+- Use `useState` with explicit type parameters when type can't be inferred
+- Prefer `useCallback` for event handlers passed to child components
+- Use `useMemo` for expensive computations, not for object/array creation
+- Custom hooks should start with `use` and return objects, not arrays
+
+## Event Handling
+- Use proper event types (e.g., `React.ChangeEvent<HTMLInputElement>`)
+- Prefer event handler props over inline functions for performance
+- Use `useCallback` for event handlers to prevent unnecessary re-renders
+
+## Component Example
+```typescript
+interface RecipeCardProps {
+  recipe: Recipe;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+export const RecipeCard: React.FC<RecipeCardProps> = ({ 
+  recipe, 
+  onEdit, 
+  onDelete 
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const handleEdit = useCallback(() => {
+    onEdit(recipe.id);
+  }, [recipe.id, onEdit]);
+  
+  return (
+    <Box sx={{ p: 2, border: 1, borderColor: 'divider' }}>
+      {/* Component content */}
+    </Box>
+  );
+};
+```
+
+## Custom Hook Example
+```typescript
+interface UseRecipesReturn {
+  recipes: Recipe[];
+  loading: boolean;
+  error: string | null;
+  addRecipe: (recipe: Omit<Recipe, 'id'>) => Promise<void>;
+}
+
+export const useRecipes = (): UseRecipesReturn => {
+  // Hook implementation
+};
+```

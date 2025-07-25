@@ -1,0 +1,43 @@
+# TypeScript Best Practices
+
+## Type Safety
+- Always use explicit types for function parameters and return values
+- Prefer `interface` over `type` for object shapes unless using unions/intersections
+- Use strict TypeScript settings and avoid `any` - prefer `unknown` when type is unclear
+- Use type assertions sparingly and only when you're certain of the type
+- Prefer const assertions (`as const`) for immutable data structures
+
+## Code Organization
+- Use named exports over default exports for better refactoring support
+- Group imports: external libraries, internal modules, relative imports
+- Use absolute imports from `src/` when possible
+- Keep files focused and under 300 lines when practical
+
+## Import/Export Patterns
+
+### Imports
+```typescript
+// External libraries first
+import React, { useState, useCallback } from 'react';
+import { Box, Typography, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+// Internal modules
+import { RecipeService } from '../services/RecipeService';
+import { Recipe } from '../types/Recipe';
+
+// Relative imports last
+import './ComponentName.css';
+```
+
+### Exports
+- Use named exports for components, utilities, and types
+- Export interfaces and types that might be used by other components
+- Avoid default exports except for pages/routes
+
+## Additional Notes
+- Follow the existing Prettier configuration for formatting
+- Use ESLint rules and fix warnings promptly
+- Leverage TypeScript's strict mode benefits
+- Keep dependencies up to date and remove unused ones
+- Document complex business logic with JSDoc comments

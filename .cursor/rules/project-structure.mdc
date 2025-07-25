@@ -1,0 +1,64 @@
+# Project Structure Best Practices
+
+## File Naming Conventions
+- Use PascalCase for component files and names
+- Use camelCase for functions, variables, and file names (except components)
+- Use UPPER_SNAKE_CASE for constants
+- Use descriptive names that explain purpose, not implementation
+
+## Directory Organization
+- Keep components in `/src/components/` with one component per file
+- Use `/src/pages/` for route components
+- Place shared utilities in `/src/utils/`
+- Keep types in component files or `/src/types/` for shared types
+
+## Recommended Project Structure
+```
+src/
+├── components/           # Reusable UI components
+│   ├── RecipeCard.tsx
+│   ├── RecipeForm.tsx
+│   └── Navigation.tsx
+├── pages/               # Route components
+│   ├── HomePage.tsx
+│   ├── RecipePage.tsx
+│   └── NotFoundPage.tsx
+├── hooks/               # Custom React hooks
+│   ├── useRecipes.ts
+│   └── useLocalStorage.ts
+├── services/            # API and external service calls
+│   ├── recipeService.ts
+│   └── apiClient.ts
+├── types/               # Shared TypeScript types
+│   ├── Recipe.ts
+│   └── User.ts
+├── utils/               # Pure utility functions
+│   ├── formatDate.ts
+│   └── validation.ts
+├── constants/           # Application constants
+│   └── routes.ts
+└── styles/              # Global styles and themes
+    ├── theme.ts
+    └── globalStyles.css
+```
+
+## File Naming Examples
+```
+✅ Good:
+- RecipeCard.tsx (component)
+- useRecipes.ts (custom hook)
+- formatDate.ts (utility)
+- API_ENDPOINTS.ts (constants)
+
+❌ Avoid:
+- recipecard.tsx
+- Recipes-Hook.ts
+- format_date.ts
+- api-endpoints.ts
+```
+
+## Import Organization
+- Group imports by type and source
+- Use absolute imports from `src/` when possible
+- Keep relative imports for closely related files
+- Order: external libraries, internal modules, relative imports
