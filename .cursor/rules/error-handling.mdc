@@ -1,0 +1,96 @@
+# Error Handling Best Practices
+
+## Error Boundaries
+- Use Error Boundaries for component error handling
+- Implement fallback UI for graceful degradation
+- Log errors for debugging while showing user-friendly messages
+
+## Error Boundary Example
+```typescript
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+export class ErrorBoundary extends Component<
+  PropsWithChildren,
+  ErrorBoundaryState
+> {
+  constructor(props: PropsWithChildren) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Box sx={{ p: 3, textAlign: 'center' }}>
+          <Typography variant="h5" color="error" gutterBottom>
+            Something went wrong
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            We're sorry, but something unexpected happened. Please try refreshing the page.
+          </Typography>
+          <Button 
+            variant="contained" 
+            onClick={() => window.location.reload()}
+            sx={{ mt: 2 }}
+          >
+            Refresh Page
+          </Button>
+        </Box>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+## Async Error Handling
+- Use try-catch blocks for async operations
+- Implement proper loading and error states in components
+- Provide meaningful error messages to users
+
+## Async Error Example
+```typescript
+const useRecipes = () => {
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchRecipes = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const data = await recipeService.getRecipes();
+      setRecipes(data);
+    } catch (err) {
+      const message = err instanceof Error 
+        ? err.message 
+        : 'Failed to load recipes';
+      setError(message);
+      console.error('Failed to fetch recipes:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { recipes, loading, error, fetchRecipes };
+};
+```
+
+## User-Friendly Error Messages
+- Avoid technical jargon in user-facing errors
+- Provide actionable solutions when possible
+- Use consistent error message patterns
+- Include retry mechanisms for transient errors
