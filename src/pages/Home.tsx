@@ -12,10 +12,7 @@ const Home: React.FC = () => {
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Box sx={{ textAlign: 'center', py: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Welcome to Family Recipes
-        </Typography>
-        <Typography variant="body1" color="text.secondary" paragraph>
-          Preserve and share your cherished family recipes with loved ones.
+          Family Recipes
         </Typography>
         <Box sx={{ mt: 3, display: 'flex', gap: 2, justifyContent: 'center' }}>
           <Button variant="contained" onClick={() => navigate('/recipes')}>
@@ -26,16 +23,18 @@ const Home: React.FC = () => {
           </Button>
         </Box>
       </Box>
-      
+
       <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4, mb: 3 }}>
         Featured Recipes
       </Typography>
-      
-      <Box sx={{ 
-        display: 'grid',
-        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-        gap: 3
-      }}>
+
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+          gap: 3,
+        }}
+      >
         {featuredRecipes.map((recipe) => (
           <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
@@ -44,4 +43,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home; 
+export default Home;

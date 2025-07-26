@@ -8,8 +8,7 @@ test.describe('Family Recipes App', () => {
 
   test('displays welcome message on home page', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText('Welcome to Family Recipes')).toBeVisible();
-    await expect(page.getByText('Preserve and share your cherished family recipes')).toBeVisible();
+    await expect(page.getByText('Family Recipes')).toBeVisible();
   });
 
   test('navigation menu works on desktop', async ({ page, isMobile }) => {
