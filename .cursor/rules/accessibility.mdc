@@ -1,4 +1,62 @@
+---
+globs: *.tsx
+alwaysApply: false
+---
 # Accessibility Best Practices
+
+## ARIA and Semantic HTML
+- Always include proper ARIA labels and roles
+- Use semantic HTML elements when not using MUI components
+- Maintain proper heading hierarchy (h1, h2, h3, etc.)
+- Provide meaningful alt text for images
+
+## Keyboard Navigation
+- Ensure all interactive elements are keyboard accessible
+- Implement proper focus management
+- Use tab order that follows logical flow
+- Provide visible focus indicators
+
+## Accessibility Examples
+```typescript
+// Good: Proper ARIA labels and semantic structure
+<main>
+  <h1>Recipe Collection</h1>
+  <section aria-labelledby="recipes-heading">
+    <h2 id="recipes-heading">My Recipes</h2>
+    <button 
+      aria-label="Add new recipe"
+      onClick={handleAddRecipe}
+    >
+      <AddIcon />
+    </button>
+  </section>
+</main>
+
+// Form accessibility
+<TextField
+  id="recipe-title"
+  label="Recipe Title"
+  required
+  aria-describedby="title-help"
+  error={!!titleError}
+  helperText={titleError || "Enter a descriptive title for your recipe"}
+/>
+
+// Skip link for keyboard users
+<a 
+  href="#main-content" 
+  className="skip-link"
+  onFocus={(e) => e.target.scrollIntoView()}
+>
+  Skip to main content
+</a>
+```
+
+## Screen Reader Support
+- Use descriptive text for links and buttons
+- Provide context for form fields
+- Announce dynamic content changes
+- Use proper heading structure for navigation# Accessibility Best Practices
 
 ## ARIA and Semantic HTML
 - Always include proper ARIA labels and roles

@@ -1,4 +1,49 @@
+---
+globs: *.tsx
+alwaysApply: false
+---
 # Testing Best Practices
+
+## Component Testing (Testing Library)
+- Write tests for user interactions, not implementation details
+- Use Testing Library's queries in order of preference: getByRole, getByLabelText, getByText
+- Mock external dependencies and API calls
+- Test error states and loading states
+
+## Testing Example
+```typescript
+import { render, screen, fireEvent } from '@testing-library/react';
+import { RecipeCard } from './RecipeCard';
+
+test('calls onEdit when edit button is clicked', () => {
+  const mockOnEdit = jest.fn();
+  const recipe = { id: '1', title: 'Test Recipe' };
+  
+  render(<RecipeCard recipe={recipe} onEdit={mockOnEdit} />);
+  
+  const editButton = screen.getByRole('button', { name: /edit/i });
+  fireEvent.click(editButton);
+  
+  expect(mockOnEdit).toHaveBeenCalledWith('1');
+});
+```
+
+## E2E Testing (Playwright)
+- Focus on critical user journeys
+- Use data-testid attributes sparingly, prefer semantic selectors
+- Keep tests independent and able to run in any order
+
+## Playwright Example
+```typescript
+test('user can create a new recipe', async ({ page }) => {
+  await page.goto('/recipes');
+  await page.click('button:has-text("Add Recipe")');
+  await page.fill('input[name="title"]', 'New Recipe');
+  await page.click('button:has-text("Save")');
+  
+  await expect(page.locator('text=New Recipe')).toBeVisible();
+});
+```# Testing Best Practices
 
 ## Component Testing (Testing Library)
 - Write tests for user interactions, not implementation details

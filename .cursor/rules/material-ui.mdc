@@ -1,4 +1,53 @@
+---
+globs: *.tsx
+alwaysApply: false
+---
 # Material-UI (MUI) Best Practices
+
+## Component Usage
+- Use MUI's sx prop for styling over makeStyles or styled components when possible
+- Leverage MUI's theme system for consistent spacing, colors, and typography
+- Use MUI's Grid system for responsive layouts
+- Prefer MUI components over custom HTML elements when available
+
+## Theming
+- Use theme.palette for colors, theme.spacing for margins/padding
+- Utilize theme.breakpoints for responsive design
+- Keep custom theme overrides minimal and well-documented
+
+## Styling Examples
+```typescript
+// Prefer sx prop for styling
+<Box sx={{ 
+  p: theme.spacing(2), 
+  bgcolor: 'primary.main',
+  [theme.breakpoints.up('md')]: {
+    p: theme.spacing(3)
+  }
+}}>
+  Content
+</Box>
+
+// Use theme values consistently
+<Typography 
+  variant="h4" 
+  sx={{ 
+    color: 'text.primary',
+    mb: 2 
+  }}
+>
+  Title
+</Typography>
+```
+
+## Grid System
+```typescript
+<Grid container spacing={2}>
+  <Grid item xs={12} md={6}>
+    <RecipeCard recipe={recipe} />
+  </Grid>
+</Grid>
+```# Material-UI (MUI) Best Practices
 
 ## Component Usage
 - Use MUI's sx prop for styling over makeStyles or styled components when possible
