@@ -112,9 +112,7 @@ test.describe('Family Recipes App', () => {
     await expect(page.getByText('Tuesday')).toBeVisible();
     await expect(page.getByText('Sunday')).toBeVisible();
     
-    // Check meal types
-    await expect(page.getByText('Breakfast').first()).toBeVisible();
-    await expect(page.getByText('Lunch').first()).toBeVisible();
+    // Check meal type label (only Dinner should be present now)
     await expect(page.getByText('Dinner').first()).toBeVisible();
   });
 
