@@ -15,26 +15,26 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import PrintIcon from '@mui/icons-material/Print';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
 import { Recipe } from '../data/types';
 import { recipes } from '../data/recipes';
 import RecipeCard from '../components/RecipeCard';
 
 interface DayMenu {
-  breakfast?: Recipe;
-  lunch?: Recipe;
   dinner?: Recipe;
 }
 
 const WeeklyMenu: React.FC = () => {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const meals = ['breakfast', 'lunch', 'dinner'] as const;
+  // For now we only support dinner planning
+  const meals = ['dinner'] as const;
 
   const [weekMenu, setWeekMenu] = useState<Record<string, DayMenu>>({});
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
-  const [selectedMeal, setSelectedMeal] = useState<'breakfast' | 'lunch' | 'dinner'>('breakfast');
+  const [selectedMeal, setSelectedMeal] = useState<'dinner'>('dinner');
 
-  const handleAddRecipe = (day: string, meal: 'breakfast' | 'lunch' | 'dinner') => {
+  const handleAddRecipe = (day: string, meal: 'dinner') => {
     setSelectedDay(day);
     setSelectedMeal(meal);
     setDialogOpen(true);
@@ -51,7 +51,7 @@ const WeeklyMenu: React.FC = () => {
     setDialogOpen(false);
   };
 
-  const handleRemoveRecipe = (day: string, meal: 'breakfast' | 'lunch' | 'dinner') => {
+  const handleRemoveRecipe = (day: string, meal: 'dinner') => {
     setWeekMenu((prev) => {
       const newMenu = { ...prev };
       if (newMenu[day]) {
@@ -76,6 +76,18 @@ const WeeklyMenu: React.FC = () => {
     return Array.from(ingredients);
   };
 
+  // Helper to randomly assign dinners for the entire week
+  const randomizeDinners = () => {
+    setWeekMenu(() => {
+      const newMenu: Record<string, DayMenu> = {};
+      days.forEach((day) => {
+        const randomRecipe = recipes[Math.floor(Math.random() * recipes.length)];
+        newMenu[day] = { dinner: randomRecipe };
+      });
+      return newMenu;
+    });
+  };
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
@@ -96,6 +108,16 @@ const WeeklyMenu: React.FC = () => {
             }}
           >
             Generate Shopping List
+          </Button>
+
+          {/* New button to auto-plan dinners */}
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={randomizeDinners}
+            startIcon={<ShuffleIcon />}
+          >
+            Randomize Dinners
           </Button>
         </Box>
       </Box>
