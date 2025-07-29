@@ -122,7 +122,20 @@ const WeeklyMenu: React.FC = () => {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 2,
+          // Responsive layout: 1 column on phones up to 7 columns on large desktops
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+            xl: 'repeat(7, 1fr)',
+          },
+        }}
+      >
         {days.map((day) => (
           <Paper key={day} sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom sx={{ textAlign: 'center' }}>
