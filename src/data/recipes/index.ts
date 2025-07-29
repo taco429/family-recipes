@@ -1,44 +1,32 @@
-import { Recipe } from '../types';
-import { grandmasApplePie } from './grandmas-apple-pie';
-import { unclesBbqRibs } from './uncles-bbq-ribs';
-import { momsChickenSoup } from './moms-chicken-soup';
-import { dadsPancakes } from './dads-pancakes';
-import { nanasLasagna } from './nanas-lasagna';
-import { grandpasChili } from './grandpas-chili';
-import { auntiesChocolateChipCookies } from './aunties-chocolate-chip-cookies';
-import { cousinsBeefStew } from './cousins-beef-stew';
-import { sistersBananaBread } from './sisters-banana-bread';
-import { brothersFishTacos } from './brothers-fish-tacos';
-import { grandpasFrenchToast } from './grandpas-french-toast';
-import { mamasCornbread } from './mamas-cornbread';
+import { Recipe } from '../../models/Recipe';
+import aunties from './json/aunties-chocolate-chip-cookies.json';
+import brothers from './json/brothers-fish-tacos.json';
+import cousins from './json/cousins-beef-stew.json';
+import dads from './json/dads-pancakes.json';
+import grandmas from './json/grandmas-apple-pie.json';
+import grandpasChiliJson from './json/grandpas-chili.json';
+import grandpasToast from './json/grandpas-french-toast.json';
+import mamas from './json/mamas-cornbread.json';
+import moms from './json/moms-chicken-soup.json';
+import nanas from './json/nanas-lasagna.json';
+import sisters from './json/sisters-banana-bread.json';
+import uncles from './json/uncles-bbq-ribs.json';
 
-export const recipes: Recipe[] = [
-  grandmasApplePie,
-  unclesBbqRibs,
-  momsChickenSoup,
-  dadsPancakes,
-  nanasLasagna,
-  grandpasChili,
-  auntiesChocolateChipCookies,
-  cousinsBeefStew,
-  sistersBananaBread,
-  brothersFishTacos,
-  grandpasFrenchToast,
-  mamasCornbread,
-];
+const jsonRecipes = [
+  aunties,
+  brothers,
+  cousins,
+  dads,
+  grandmas,
+  grandpasChiliJson,
+  grandpasToast,
+  mamas,
+  moms,
+  nanas,
+  sisters,
+  uncles,
+] as const;
 
-// Export individual recipes for direct import if needed
-export {
-  grandmasApplePie,
-  unclesBbqRibs,
-  momsChickenSoup,
-  dadsPancakes,
-  nanasLasagna,
-  grandpasChili,
-  auntiesChocolateChipCookies,
-  cousinsBeefStew,
-  sistersBananaBread,
-  brothersFishTacos,
-  grandpasFrenchToast,
-  mamasCornbread,
-};
+export const recipes: Recipe[] = jsonRecipes.map((j) => Recipe.fromJSON(j));
+
+export const recipeMap: Map<string, Recipe> = new Map(recipes.map((r) => [r.id, r]));

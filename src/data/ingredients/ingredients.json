@@ -1,0 +1,8 @@
+[
+  { "id": "all-purpose-flour", "name": "All-purpose Flour" },
+  { "id": "butter", "name": "Butter" },
+  { "id": "sugar", "name": "Sugar" },
+  { "id": "brown-sugar", "name": "Brown Sugar" },
+  { "id": "eggs", "name": "Eggs" },
+  { "id": "milk", "name": "Milk" }
+]
