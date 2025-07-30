@@ -1,5 +1,3 @@
-import { Ingredient } from './Ingredient';
-
 export interface RecipeData {
   id: string;
   title: string;
