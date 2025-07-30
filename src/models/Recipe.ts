@@ -16,25 +16,25 @@ export interface RecipeData {
 }
 
 export class Recipe implements RecipeData {
-  id: string;
-  title: string;
-  description: string;
-  cookTime: string;
-  prepTime: string;
-  servings: number;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  style: string;
-  category: string;
-  ingredients: string[];
-  instructions: string[];
+  id!: string;
+  title!: string;
+  description!: string;
+  cookTime!: string;
+  prepTime!: string;
+  servings!: number;
+  difficulty!: 'Easy' | 'Medium' | 'Hard';
+  style!: string;
+  category!: string;
+  ingredients!: string[];
+  instructions!: string[];
   imageUrl?: string;
 
   constructor(data: RecipeData) {
     Object.assign(this, data);
   }
 
-  static fromJSON(data: RecipeData): Recipe {
-    return new Recipe(data);
+  static fromJSON(data: RecipeData | any): Recipe {
+    return new Recipe(data as RecipeData);
   }
 
   /**

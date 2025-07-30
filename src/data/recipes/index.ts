@@ -27,6 +27,6 @@ const jsonRecipes = [
   uncles,
 ] as const;
 
-export const recipes: Recipe[] = jsonRecipes.map((j) => Recipe.fromJSON(j));
+export const recipes: Recipe[] = jsonRecipes.map((j) => Recipe.fromJSON(j as any));
 
 export const recipeMap: Map<string, Recipe> = new Map(recipes.map((r) => [r.id, r]));
