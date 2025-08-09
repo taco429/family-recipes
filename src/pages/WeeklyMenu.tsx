@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import PrintIcon from '@mui/icons-material/Print';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-import { Recipe } from '../data/types';
+import { Recipe, RecipeIngredient } from '../data/types';
 import { recipes } from '../data/recipes';
 import RecipeCard from '../components/RecipeCard';
 
@@ -65,15 +65,31 @@ const WeeklyMenu: React.FC = () => {
   };
 
   const getShoppingList = () => {
-    const ingredients = new Set<string>();
+    const aggregateMap = new Map<string, { name: string; unit?: string; quantity: number }>();
     Object.values(weekMenu).forEach((dayMenu) => {
       Object.values(dayMenu).forEach((recipe) => {
         if (recipe) {
-          recipe.ingredients.forEach((ing: string) => ingredients.add(ing));
+          recipe.ingredients.forEach((ing: RecipeIngredient) => {
+            const key = `${(ing.unit || '').toLowerCase()}|${ing.name.toLowerCase()}`;
+            const current = aggregateMap.get(key) || {
+              name: ing.name,
+              unit: ing.unit,
+              quantity: 0,
+            };
+            const addQty = ing.quantity !== undefined ? ing.quantity : 1;
+            current.quantity += addQty;
+            aggregateMap.set(key, current);
+          });
         }
       });
     });
-    return Array.from(ingredients);
+    // Convert to strings like "3 cups flour" or "6 eggs"
+    const list = Array.from(aggregateMap.values()).map((item) => {
+      const qtyStr = item.quantity ? `${item.quantity} ` : '';
+      const unitStr = item.unit ? `${item.unit} ` : '';
+      return `${qtyStr}${unitStr}${item.name}`.trim();
+    });
+    return list;
   };
 
   // Helper to randomly assign dinners for the entire week

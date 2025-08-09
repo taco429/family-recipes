@@ -1,3 +1,9 @@
+export interface RecipeIngredient {
+  name: string;
+  quantity?: number;
+  unit?: string;
+}
+
 export interface Recipe {
   id: string;
   title: string;
@@ -8,7 +14,7 @@ export interface Recipe {
   difficulty: 'Easy' | 'Medium' | 'Hard';
   style: string;
   imageUrl?: string;
-  ingredients: string[];
+  ingredients: RecipeIngredient[];
   instructions: string[];
   category: string;
 }
