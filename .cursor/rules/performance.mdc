@@ -1,4 +1,62 @@
+---
+alwaysApply: true
+---
+
 # Performance Best Practices
+
+## React Performance
+- Use React.memo for components that receive stable props
+- Avoid creating objects/arrays in render methods
+- Use lazy loading for routes and heavy components
+- Optimize bundle size by avoiding unnecessary imports
+
+## Memoization Examples
+```typescript
+// Use React.memo for expensive components
+export const ExpensiveComponent = React.memo<Props>(({ data }) => {
+  return <div>{/* expensive rendering */}</div>;
+});
+
+// Use useMemo for expensive calculations
+const expensiveValue = useMemo(() => {
+  return heavyCalculation(data);
+}, [data]);
+
+// Use useCallback for stable function references
+const handleClick = useCallback((id: string) => {
+  onItemClick(id);
+}, [onItemClick]);
+```
+
+## Lazy Loading
+```typescript
+// Lazy load route components
+const RecipePage = lazy(() => import('./pages/RecipePage'));
+const HomePage = lazy(() => import('./pages/HomePage'));
+
+// Wrap in Suspense
+<Suspense fallback={<div>Loading...</div>}>
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route path="/recipe/:id" element={<RecipePage />} />
+  </Routes>
+</Suspense>
+```
+
+## Bundle Optimization
+- Import only what you need from libraries
+- Use tree-shaking friendly imports
+- Avoid importing entire libraries when only using specific functions
+
+```typescript
+// Good: specific imports
+import { debounce } from 'lodash/debounce';
+import { Button, TextField } from '@mui/material';
+
+// Avoid: importing entire libraries
+import * as _ from 'lodash';
+import * as MUI from '@mui/material';
+```# Performance Best Practices
 
 ## React Performance
 - Use React.memo for components that receive stable props
