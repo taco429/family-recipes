@@ -1,3 +1,5 @@
+import type { RecipeCategory } from '../models/Recipe';
+
 export interface Recipe {
   id: string;
   title: string;
@@ -10,5 +12,5 @@ export interface Recipe {
   imageUrl?: string;
   ingredients: string[];
   instructions: string[];
-  category: string;
+  category: RecipeCategory;
 }

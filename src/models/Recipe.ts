@@ -1,3 +1,12 @@
+export enum RecipeCategory {
+  Breakfast = 'breakfast',
+  Lunch = 'lunch',
+  Dinner = 'dinner',
+  Dessert = 'dessert',
+  Side = 'side',
+  Condiment = 'condiment',
+}
+
 export interface RecipeData {
   id: string;
   title: string;
@@ -7,7 +16,7 @@ export interface RecipeData {
   servings: number;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   style: string;
-  category: string;
+  category: RecipeCategory;
   ingredients: string[];
   instructions: string[];
   imageUrl?: string;
@@ -22,7 +31,7 @@ export class Recipe implements RecipeData {
   servings!: number;
   difficulty!: 'Easy' | 'Medium' | 'Hard';
   style!: string;
-  category!: string;
+  category!: RecipeCategory;
   ingredients!: string[];
   instructions!: string[];
   imageUrl?: string;
