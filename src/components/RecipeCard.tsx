@@ -61,20 +61,30 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 345, height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Card
+      sx={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        boxShadow: 3,
+        transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+        '&:hover': { transform: 'translateY(-2px)', boxShadow: 6 },
+        borderRadius: 3,
+      }}
+    >
       <CardMedia
         component="img"
-        height="200"
+        sx={{ height: { xs: 180, sm: 200 }, objectFit: 'cover', cursor: 'pointer' }}
         image={imageUrl}
         alt={title}
-        sx={{ cursor: 'pointer' }}
         onClick={() => navigate(`/recipe/${recipe.id}`)}
       />
       <CardContent
         sx={{ flexGrow: 1, cursor: 'pointer' }}
         onClick={() => navigate(`/recipe/${recipe.id}`)}
       >
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h6" component="div">
           {title}
         </Typography>
         <Typography variant="body2" color="text.secondary" paragraph>

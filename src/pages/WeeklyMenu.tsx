@@ -105,17 +105,31 @@ const WeeklyMenu: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Container maxWidth="lg" sx={{ mt: 2, mb: 6 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: { xs: 'flex-start', sm: 'center' },
+          gap: 2,
+          flexWrap: 'wrap',
+          mb: 2,
+        }}
+      >
         <Typography variant="h4" component="h1">
           Weekly Menu Planner
         </Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button variant="outlined" startIcon={<PrintIcon />} onClick={() => window.print()}>
+        <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<PrintIcon />}
+            onClick={() => window.print()}
+          >
             Print Menu
           </Button>
           <Button
-            variant="contained"
+            size="small"
             onClick={() => {
               const list = getShoppingList();
               const listText = list.join('\n');
@@ -128,7 +142,7 @@ const WeeklyMenu: React.FC = () => {
 
           {/* New button to auto-plan dinners */}
           <Button
-            variant="contained"
+            size="small"
             color="secondary"
             onClick={randomizeDinners}
             startIcon={<ShuffleIcon />}
@@ -142,7 +156,6 @@ const WeeklyMenu: React.FC = () => {
         sx={{
           display: 'grid',
           gap: 2,
-          // Responsive layout: 1 column on phones up to 7 columns on large desktops
           gridTemplateColumns: {
             xs: 'repeat(1, 1fr)',
             sm: 'repeat(2, 1fr)',

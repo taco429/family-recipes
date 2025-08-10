@@ -1,6 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
@@ -18,6 +18,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import BookIcon from '@mui/icons-material/Book';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import './App.css';
 
 // Import pages
@@ -26,7 +28,7 @@ import BrowseRecipes from './pages/BrowseRecipes';
 import RecipeDetail from './pages/RecipeDetail';
 import WeeklyMenu from './pages/WeeklyMenu';
 
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
@@ -42,7 +44,23 @@ const theme = createTheme({
       fontWeight: 600,
     },
   },
+  shape: {
+    borderRadius: 12,
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        variant: 'contained',
+      },
+    },
+    MuiAppBar: {
+      defaultProps: {
+        color: 'primary',
+      },
+    },
+  },
 });
+theme = responsiveFontSizes(theme);
 
 const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
@@ -91,8 +109,8 @@ function AppContent() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={{ flexGrow: 1, pb: isMobile ? 7 : 0 }}>
+      <AppBar position="sticky">
         <Toolbar>
           {isMobile && (
             <IconButton
@@ -147,6 +165,37 @@ function AppContent() {
         <Route path="/recipe/:id" element={<RecipeDetail />} />
         <Route path="/weekly-menu" element={<WeeklyMenu />} />
       </Routes>
+
+      {isMobile && (
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            bgcolor: 'background.paper',
+            borderTop: 1,
+            borderColor: 'divider',
+            pb: 'env(safe-area-inset-bottom)',
+            zIndex: (t) => t.zIndex.appBar,
+          }}
+        >
+          <BottomNavigation
+            showLabels
+            value={menuItems.findIndex((i) => i.path === location.pathname)}
+          >
+            {menuItems.map((item) => (
+              <BottomNavigationAction
+                key={item.text}
+                label={item.text}
+                icon={item.icon}
+                component={Link}
+                to={item.path}
+              />
+            ))}
+          </BottomNavigation>
+        </Box>
+      )}
     </Box>
   );
 }
