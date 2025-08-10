@@ -56,14 +56,22 @@ const BrowseRecipes: React.FC = () => {
   });
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Container maxWidth="lg" sx={{ mt: 2, mb: 6 }}>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ px: { xs: 1, sm: 0 } }}>
         Browse Recipes
       </Typography>
 
-      <Box sx={{ mb: 4, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <Box
+        sx={{
+          mb: 3,
+          display: 'grid',
+          gap: 2,
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '2fr repeat(4, 1fr)' },
+          alignItems: 'stretch',
+        }}
+      >
         <TextField
-          sx={{ flexGrow: 1, minWidth: 250 }}
+          sx={{ width: '100%' }}
           placeholder="Search recipes..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -81,7 +89,7 @@ const BrowseRecipes: React.FC = () => {
           label="Category"
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          sx={{ minWidth: 150 }}
+          sx={{ width: '100%' }}
         >
           {categories.map((category) => (
             <MenuItem key={category} value={category}>
@@ -95,7 +103,7 @@ const BrowseRecipes: React.FC = () => {
           label="Difficulty"
           value={difficultyFilter}
           onChange={(e) => setDifficultyFilter(e.target.value)}
-          sx={{ minWidth: 150 }}
+          sx={{ width: '100%' }}
         >
           {difficulties.map((difficulty) => (
             <MenuItem key={difficulty} value={difficulty}>
@@ -109,7 +117,7 @@ const BrowseRecipes: React.FC = () => {
           label="Style"
           value={styleFilter}
           onChange={(e) => setStyleFilter(e.target.value)}
-          sx={{ minWidth: 150 }}
+          sx={{ width: '100%' }}
         >
           {styles.map((style) => (
             <MenuItem key={style} value={style}>
@@ -123,7 +131,7 @@ const BrowseRecipes: React.FC = () => {
           label="Sort by"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          sx={{ minWidth: 150 }}
+          sx={{ width: '100%' }}
         >
           {sortOptions.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -140,8 +148,12 @@ const BrowseRecipes: React.FC = () => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-          gap: 3,
+          gridTemplateColumns: {
+            xs: 'repeat(1, minmax(0, 1fr))',
+            sm: 'repeat(2, minmax(0, 1fr))',
+            md: 'repeat(3, minmax(0, 1fr))',
+          },
+          gap: 2,
         }}
       >
         {sortedRecipes.map((recipe) => (

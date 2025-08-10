@@ -31,7 +31,7 @@ const RecipeDetail: React.FC = () => {
 
   if (!recipe) {
     return (
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 2, mb: 6 }}>
         <Typography variant="h4">Recipe not found</Typography>
         <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/recipes')} sx={{ mt: 2 }}>
           Back to Recipes
@@ -71,17 +71,19 @@ const RecipeDetail: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 2, mb: 6, px: { xs: 1, sm: 2 } }}>
       <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)} sx={{ mb: 2 }}>
         Back
       </Button>
 
-      <Box sx={{ display: 'flex', gap: 4, flexDirection: { xs: 'column', md: 'row' } }}>
+      <Box
+        sx={{ display: 'flex', gap: { xs: 2, md: 4 }, flexDirection: { xs: 'column', md: 'row' } }}
+      >
         <Box sx={{ flex: 1 }}>
           <img
             src={recipe.imageUrl || 'https://source.unsplash.com/random/600x400/?food'}
             alt={recipe.title}
-            style={{ width: '100%', borderRadius: 8 }}
+            style={{ width: '100%', borderRadius: 12 }}
           />
         </Box>
 
@@ -117,8 +119,15 @@ const RecipeDetail: React.FC = () => {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', gap: 4, mt: 4, flexDirection: { xs: 'column', md: 'row' } }}>
-        <Paper sx={{ flex: 1, p: 3 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: { xs: 2, md: 4 },
+          mt: 4,
+          flexDirection: { xs: 'column', md: 'row' },
+        }}
+      >
+        <Paper sx={{ flex: 1, p: { xs: 2, md: 3 } }}>
           <Typography variant="h6" gutterBottom>
             Ingredients
           </Typography>
@@ -136,7 +145,7 @@ const RecipeDetail: React.FC = () => {
           </List>
         </Paper>
 
-        <Paper sx={{ flex: 2, p: 3 }}>
+        <Paper sx={{ flex: 2, p: { xs: 2, md: 3 } }}>
           <Typography variant="h6" gutterBottom>
             Instructions
           </Typography>
