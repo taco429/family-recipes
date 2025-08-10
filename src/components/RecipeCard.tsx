@@ -75,10 +75,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
     >
       <CardMedia
         component="img"
-        sx={{ height: { xs: 180, sm: 200 }, objectFit: 'cover' }}
+        sx={{ height: { xs: 180, sm: 200 }, objectFit: 'cover', cursor: 'pointer' }}
         image={imageUrl}
         alt={title}
-        sx={{ cursor: 'pointer' }}
         onClick={() => navigate(`/recipe/${recipe.id}`)}
       />
       <CardContent
