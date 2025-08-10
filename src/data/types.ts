@@ -1,4 +1,17 @@
-import type { RecipeCategory } from '../models/Recipe';
+export interface RecipeIngredient {
+  name: string;
+  quantity?: number;
+  unit?: string;
+}
+
+export enum RecipeCategory {
+  Breakfast = 'breakfast',
+  Lunch = 'lunch',
+  Dinner = 'dinner',
+  Dessert = 'dessert',
+  Side = 'side',
+  Condiment = 'condiment',
+}
 
 export interface Recipe {
   id: string;
@@ -10,7 +23,7 @@ export interface Recipe {
   difficulty: 'Easy' | 'Medium' | 'Hard';
   style: string;
   imageUrl?: string;
-  ingredients: string[];
+  ingredients: RecipeIngredient[];
   instructions: string[];
   category: RecipeCategory;
 }

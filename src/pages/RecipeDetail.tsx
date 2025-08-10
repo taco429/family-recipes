@@ -123,11 +123,16 @@ const RecipeDetail: React.FC = () => {
             Ingredients
           </Typography>
           <List>
-            {recipe.ingredients.map((ingredient, index) => (
-              <ListItem key={index} sx={{ py: 0.5 }}>
-                <ListItemText primary={ingredient} />
-              </ListItem>
-            ))}
+            {recipe.ingredients.map((ingredient, index) => {
+              const qty = ingredient.quantity !== undefined ? `${ingredient.quantity} ` : '';
+              const unit = ingredient.unit ? `${ingredient.unit} ` : '';
+              const primary = `${qty}${unit}${ingredient.name}`.trim();
+              return (
+                <ListItem key={index} sx={{ py: 0.5 }}>
+                  <ListItemText primary={primary} />
+                </ListItem>
+              );
+            })}
           </List>
         </Paper>
 
