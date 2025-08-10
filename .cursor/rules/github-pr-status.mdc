@@ -1,0 +1,78 @@
+---
+alwaysApply: false
+---
+
+### Check GitHub PR status and CI checks
+
+When asked to check the status of a GitHub Pull Request (PR) and its CI/GitHub Actions checks, run the commands below non-interactively and return a concise summary.
+
+#### Preconditions
+- Assume the current working directory is the repo root. If not sure which repo, first determine `owner/repo`.
+- Requires GitHub CLI (`gh`) installed and authenticated for the repo’s host.
+- If a PR identifier is not provided, ask for a PR number or URL.
+
+#### Inputs
+- **PR identifier**: either a PR number (e.g. `123`) or a full PR URL.
+
+#### Commands (non-interactive)
+- Verify authentication and repo context (no paging):
+  ```bash
+  gh auth status --hostname github.com | cat
+  gh repo view --json nameWithOwner -q .nameWithOwner | cat
+  ```
+
+- Fetch PR core metadata (rich JSON for summarization):
+  ```bash
+  gh pr view <PR> --json number,title,state,isDraft,mergeStateStatus,mergeable,reviewDecision,author,createdAt,updatedAt,url,headRefName,baseRefName,labels -q .
+  ```
+
+- Fetch latest commit SHA of the PR (used to correlate runs):
+  ```bash
+  gh pr view <PR> --json commits -q '.commits[-1].oid' | cat
+  ```
+
+- Fetch PR checks (two complementary approaches):
+  1) Aggregated PR checks (includes non-Actions checks where available):
+     ```bash
+     gh pr checks <PR> | cat
+     ```
+  2) GitHub Actions runs for the latest PR commit:
+     ```bash
+     SHA=$(gh pr view <PR> --json commits -q '.commits[-1].oid') && gh run list --commit "$SHA" --limit 50 --json databaseId,name,status,conclusion,headSha,url,workflowName,createdAt,event -q '.' | cat
+     ```
+
+#### Output & Summarization
+Provide a compact, human-friendly summary with:
+- **PR**: number, title, URL, author, state (open/closed/merged), draft flag
+- **Branches**: `headRefName -> baseRefName`
+- **Merge readiness**: `mergeable`, `mergeStateStatus`, `reviewDecision`
+- **Latest commit**: SHA
+- **Checks/CI**: list workflows/jobs with `status` and `conclusion`; highlight any failing or in-progress checks and include direct run URLs
+- If no runs are found for the latest commit, say so explicitly
+
+#### Failure Handling
+- If `gh` is not installed or not authenticated: state the issue and provide quick fix hints:
+  - Install: `https://cli.github.com/`
+  - Auth: `gh auth login`
+- If PR not found or user lacks permissions: report the error and ask for a different PR or repo context
+
+#### Examples
+- Given a PR number:
+  ```bash
+  gh pr view 123 --json number,title,state,isDraft,mergeStateStatus,mergeable,reviewDecision,author,createdAt,updatedAt,url,headRefName,baseRefName,labels -q .
+  gh pr checks 123 | cat
+  SHA=$(gh pr view 123 --json commits -q '.commits[-1].oid') && gh run list --commit "$SHA" --limit 50 --json databaseId,name,status,conclusion,headSha,url,workflowName,createdAt,event -q '.' | cat
+  ```
+
+- Given a PR URL:
+  ```bash
+  gh pr view https://github.com/OWNER/REPO/pull/123 --json number,title,state,isDraft,mergeStateStatus,mergeable,reviewDecision,author,createdAt,updatedAt,url,headRefName,baseRefName,labels -q .
+  gh pr checks https://github.com/OWNER/REPO/pull/123 | cat
+  SHA=$(gh pr view https://github.com/OWNER/REPO/pull/123 --json commits -q '.commits[-1].oid') && gh run list --commit "$SHA" --limit 50 --json databaseId,name,status,conclusion,headSha,url,workflowName,createdAt,event -q '.' | cat
+  ```
+
+#### Notes
+- Always append `| cat` when output might invoke a pager.
+- Prefer JSON outputs where available to enable reliable summarization.
+- Use the aggregated `gh pr checks` output in addition to `gh run list` to capture non-Actions checks (e.g., external status providers).
+
