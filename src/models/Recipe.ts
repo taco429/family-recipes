@@ -1,8 +1,4 @@
-export interface RecipeIngredient {
-  name: string;
-  quantity?: number;
-  unit?: string;
-}
+import { RecipeIngredient, RecipeCategory } from '../data/types';
 
 export interface RecipeData {
   id: string;
@@ -13,7 +9,7 @@ export interface RecipeData {
   servings: number;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   style: string;
-  category: string;
+  category: RecipeCategory;
   ingredients: RecipeIngredient[];
   instructions: string[];
   imageUrl?: string;
@@ -28,7 +24,7 @@ export class Recipe implements RecipeData {
   servings!: number;
   difficulty!: 'Easy' | 'Medium' | 'Hard';
   style!: string;
-  category!: string;
+  category!: RecipeCategory;
   ingredients!: RecipeIngredient[];
   instructions!: string[];
   imageUrl?: string;
@@ -185,7 +181,7 @@ export class Recipe implements RecipeData {
       servings: data.servings,
       difficulty: data.difficulty,
       style: data.style,
-      category: data.category,
+      category: (data.category as RecipeCategory) ?? RecipeCategory.Dinner,
       ingredients,
       instructions: data.instructions,
       imageUrl: data.imageUrl,

@@ -4,6 +4,15 @@ export interface RecipeIngredient {
   unit?: string;
 }
 
+export enum RecipeCategory {
+  Breakfast = 'breakfast',
+  Lunch = 'lunch',
+  Dinner = 'dinner',
+  Dessert = 'dessert',
+  Side = 'side',
+  Condiment = 'condiment',
+}
+
 export interface Recipe {
   id: string;
   title: string;
@@ -16,5 +25,5 @@ export interface Recipe {
   imageUrl?: string;
   ingredients: RecipeIngredient[];
   instructions: string[];
-  category: string;
+  category: RecipeCategory;
 }
