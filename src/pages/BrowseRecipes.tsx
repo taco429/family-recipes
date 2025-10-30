@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Container,
   Typography,
@@ -17,7 +17,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import { useFavoritesContext } from '../context/FavoritesContext';
 
 const BrowseRecipes: React.FC = () => {
-  const { favorites, isFavorite } = useFavoritesContext();
+  const { isFavorite } = useFavoritesContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [difficultyFilter, setDifficultyFilter] = useState('All');

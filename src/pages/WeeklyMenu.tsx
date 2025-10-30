@@ -33,8 +33,11 @@ interface DayMenu {
 }
 
 const WeeklyMenu: React.FC = () => {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const meals = ['breakfast', 'lunch', 'dinner'] as const;
+  const days = useMemo(
+    () => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    []
+  );
+  const meals = useMemo(() => ['breakfast', 'lunch', 'dinner'] as const, []);
   const { showSnackbar } = useSnackbar();
 
   const [weekMenu, setWeekMenu] = useLocalStorage<Record<string, DayMenu>>('weekly-menu', {});
