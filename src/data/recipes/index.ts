@@ -10,6 +10,7 @@ import mamas from './json/mamas-cornbread.json';
 import moms from './json/moms-chicken-soup.json';
 import nanas from './json/nanas-lasagna.json';
 import sisters from './json/sisters-banana-bread.json';
+import spicyBuffaloChili from './json/spicy-buffalo-white-chicken-chili.json';
 import uncles from './json/uncles-bbq-ribs.json';
 
 const jsonRecipes = [
@@ -24,6 +25,7 @@ const jsonRecipes = [
   moms,
   nanas,
   sisters,
+  spicyBuffaloChili,
   uncles,
 ] as const;
 
