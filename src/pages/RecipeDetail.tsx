@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -18,16 +18,42 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import GroupIcon from '@mui/icons-material/Group';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import PrintIcon from '@mui/icons-material/Print';
 import PublicIcon from '@mui/icons-material/Public';
 import { recipes } from '../data/recipes';
+import { useFavorites } from '../hooks/useFavorites';
+import { shareRecipeUrl } from '../utils/shareUtils';
+import { useSnackbar } from '../components/SnackbarProvider';
+import { formatIngredient } from '../utils/ingredientFormatter';
 
 const RecipeDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const { showSnackbar } = useSnackbar();
 
   const recipe = recipes.find((r) => r.id === id);
+  const isFav = recipe ? isFavorite(recipe.id) : false;
+
+  const handleFavoriteClick = useCallback(() => {
+    if (recipe) {
+      toggleFavorite(recipe.id);
+      showSnackbar(isFav ? 'Removed from favorites' : 'Added to favorites', 'success');
+    }
+  }, [recipe, toggleFavorite, isFav, showSnackbar]);
+
+  const handleShareClick = useCallback(async () => {
+    if (recipe) {
+      const success = await shareRecipeUrl(recipe.id);
+      if (success) {
+        showSnackbar('Recipe link copied to clipboard!', 'success');
+      } else {
+        showSnackbar('Failed to share recipe', 'error');
+      }
+    }
+  }, [recipe, showSnackbar]);
 
   if (!recipe) {
     return (
@@ -104,10 +130,10 @@ const RecipeDetail: React.FC = () => {
           </Box>
 
           <Box sx={{ display: 'flex', gap: 1, mb: 3 }}>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
+            <IconButton aria-label="add to favorites" onClick={handleFavoriteClick}>
+              {isFav ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
             </IconButton>
-            <IconButton aria-label="share">
+            <IconButton aria-label="share" onClick={handleShareClick}>
               <ShareIcon />
             </IconButton>
             <IconButton aria-label="print" onClick={() => window.print()}>
@@ -123,16 +149,11 @@ const RecipeDetail: React.FC = () => {
             Ingredients
           </Typography>
           <List>
-            {recipe.ingredients.map((ingredient, index) => {
-              const qty = ingredient.quantity !== undefined ? `${ingredient.quantity} ` : '';
-              const unit = ingredient.unit ? `${ingredient.unit} ` : '';
-              const primary = `${qty}${unit}${ingredient.name}`.trim();
-              return (
-                <ListItem key={index} sx={{ py: 0.5 }}>
-                  <ListItemText primary={primary} />
-                </ListItem>
-              );
-            })}
+            {recipe.ingredients.map((ingredient, index) => (
+              <ListItem key={index} sx={{ py: 0.5 }}>
+                <ListItemText primary={formatIngredient(ingredient)} />
+              </ListItem>
+            ))}
           </List>
         </Paper>
 

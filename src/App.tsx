@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,13 +18,16 @@ import HomeIcon from '@mui/icons-material/Home';
 import BookIcon from '@mui/icons-material/Book';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import CircularProgress from '@mui/material/CircularProgress';
 import './App.css';
+import { FavoritesProvider } from './context/FavoritesContext';
+import { SnackbarProvider } from './components/SnackbarProvider';
 
-// Import pages
-import Home from './pages/Home';
-import BrowseRecipes from './pages/BrowseRecipes';
-import RecipeDetail from './pages/RecipeDetail';
-import WeeklyMenu from './pages/WeeklyMenu';
+// Lazy load pages for better performance
+const Home = lazy(() => import('./pages/Home'));
+const BrowseRecipes = lazy(() => import('./pages/BrowseRecipes'));
+const RecipeDetail = lazy(() => import('./pages/RecipeDetail'));
+const WeeklyMenu = lazy(() => import('./pages/WeeklyMenu'));
 
 const theme = createTheme({
   palette: {
@@ -141,12 +144,22 @@ function AppContent() {
         {drawerContent}
       </Drawer>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/recipes" element={<BrowseRecipes />} />
-        <Route path="/recipe/:id" element={<RecipeDetail />} />
-        <Route path="/weekly-menu" element={<WeeklyMenu />} />
-      </Routes>
+      <Suspense
+        fallback={
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}
+          >
+            <CircularProgress />
+          </Box>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/recipes" element={<BrowseRecipes />} />
+          <Route path="/recipe/:id" element={<RecipeDetail />} />
+          <Route path="/weekly-menu" element={<WeeklyMenu />} />
+        </Routes>
+      </Suspense>
     </Box>
   );
 }
@@ -155,9 +168,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <AppContent />
-      </Router>
+      <SnackbarProvider>
+        <FavoritesProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </FavoritesProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
