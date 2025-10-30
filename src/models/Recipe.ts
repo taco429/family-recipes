@@ -1,4 +1,4 @@
-import { RecipeIngredient, RecipeCategory } from '../data/types';
+import { Ingredient, RecipeCategory } from '../data/types';
 
 export interface RecipeData {
   id: string;
@@ -10,7 +10,7 @@ export interface RecipeData {
   difficulty: 'Easy' | 'Medium' | 'Hard';
   style: string;
   category: RecipeCategory;
-  ingredients: RecipeIngredient[];
+  ingredients: Ingredient[];
   instructions: string[];
   imageUrl?: string;
 }
@@ -25,7 +25,7 @@ export class Recipe implements RecipeData {
   difficulty!: 'Easy' | 'Medium' | 'Hard';
   style!: string;
   category!: RecipeCategory;
-  ingredients!: RecipeIngredient[];
+  ingredients!: Ingredient[];
   instructions!: string[];
   imageUrl?: string;
 
@@ -51,7 +51,7 @@ export class Recipe implements RecipeData {
     return isNaN(decimal) ? undefined : decimal;
   }
 
-  private static parseIngredientLine(line: string): RecipeIngredient {
+  private static parseIngredientLine(line: string): Ingredient {
     // Remove parenthetical notes like (optional) or weights
     let cleaned = line.replace(/\([^)]*\)/g, '');
     // Keep only the part before a comma to drop preparation like ", chopped"
@@ -162,14 +162,14 @@ export class Recipe implements RecipeData {
 
     // Fallback: if no quantity provided but unit was parsed erroneously as descriptor, push back to name
     return {
-      name: name || cleaned,
-      quantity,
+      item: name || cleaned,
+      quantity: quantity ?? 1, // Default to 1 if no quantity specified
       unit,
     };
   }
 
   static fromJSON(data: any): Recipe {
-    const ingredients: RecipeIngredient[] = (data.ingredients || []).map((line: string) =>
+    const ingredients: Ingredient[] = (data.ingredients || []).map((line: string) =>
       Recipe.parseIngredientLine(line)
     );
     const recipeData: RecipeData = {
@@ -194,6 +194,6 @@ export class Recipe implements RecipeData {
    * This is naive and can be improved, but is useful for building an ingredient directory.
    */
   getIngredientNames(): string[] {
-    return this.ingredients.map((ing) => ing.name);
+    return this.ingredients.map((ing) => ing.item);
   }
 }

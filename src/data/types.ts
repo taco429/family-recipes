@@ -1,7 +1,9 @@
-export interface RecipeIngredient {
-  name: string;
-  quantity?: number;
-  unit?: string;
+export interface Ingredient {
+  quantity: number | string; // Can be number (1, 2, 0.5) or string ("1/2", "to taste")
+  unit?: string; // cup, tbsp, tsp, oz, lb, etc. (optional for items like "eggs")
+  item: string; // The actual ingredient name (onion, garlic, chicken, etc.)
+  preparation?: string; // chopped, diced, minced, sliced, etc.
+  notes?: string; // Additional notes (optional, e.g., "room temperature", "divided")
 }
 
 export enum RecipeCategory {
@@ -23,7 +25,7 @@ export interface Recipe {
   difficulty: 'Easy' | 'Medium' | 'Hard';
   style: string;
   imageUrl?: string;
-  ingredients: RecipeIngredient[];
+  ingredients: Ingredient[];
   instructions: string[];
-  category: RecipeCategory;
+  category: RecipeCategory | string; // Allow both enum and string for flexibility
 }

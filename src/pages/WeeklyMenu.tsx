@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -15,94 +15,106 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import PrintIcon from '@mui/icons-material/Print';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-import { Recipe, RecipeIngredient } from '../data/types';
+import { Recipe } from '../data/types';
 import { recipes } from '../data/recipes';
 import RecipeCard from '../components/RecipeCard';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import ShoppingList from '../components/ShoppingList';
+import { useSnackbar } from '../components/SnackbarProvider';
+import RandomMenuDialog from '../components/RandomMenuDialog';
+import { generateRandomMenu } from '../utils/menuGenerator';
 
 interface DayMenu {
+  breakfast?: Recipe;
+  lunch?: Recipe;
   dinner?: Recipe;
 }
 
 const WeeklyMenu: React.FC = () => {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  // For now we only support dinner planning
-  const meals = ['dinner'] as const;
+  const days = useMemo(
+    () => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    []
+  );
+  const meals = useMemo(() => ['breakfast', 'lunch', 'dinner'] as const, []);
+  const { showSnackbar } = useSnackbar();
 
-  const [weekMenu, setWeekMenu] = useState<Record<string, DayMenu>>({});
+  const [weekMenu, setWeekMenu] = useLocalStorage<Record<string, DayMenu>>('weekly-menu', {});
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [shoppingListOpen, setShoppingListOpen] = useState(false);
+  const [randomMenuDialogOpen, setRandomMenuDialogOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
-  const [selectedMeal, setSelectedMeal] = useState<'dinner'>('dinner');
+  const [selectedMeal, setSelectedMeal] = useState<'breakfast' | 'lunch' | 'dinner'>('dinner');
 
-  const handleAddRecipe = (day: string, meal: 'dinner') => {
+  const shoppingListRecipes = useMemo(() => {
+    const recipeList: Recipe[] = [];
+    Object.values(weekMenu).forEach((dayMenu) => {
+      Object.values(dayMenu).forEach((recipe) => {
+        if (recipe && !recipeList.find((r) => r.id === recipe.id)) {
+          recipeList.push(recipe);
+        }
+      });
+    });
+    return recipeList;
+  }, [weekMenu]);
+
+  const handleAddRecipe = useCallback((day: string, meal: 'breakfast' | 'lunch' | 'dinner') => {
     setSelectedDay(day);
     setSelectedMeal(meal);
     setDialogOpen(true);
-  };
+  }, []);
 
-  const handleSelectRecipe = (recipe: Recipe) => {
-    setWeekMenu((prev) => ({
-      ...prev,
-      [selectedDay]: {
-        ...prev[selectedDay],
-        [selectedMeal]: recipe,
-      },
-    }));
-    setDialogOpen(false);
-  };
+  const handleSelectRecipe = useCallback(
+    (recipe: Recipe) => {
+      setWeekMenu((prev) => ({
+        ...prev,
+        [selectedDay]: {
+          ...prev[selectedDay],
+          [selectedMeal]: recipe,
+        },
+      }));
+      setDialogOpen(false);
+      showSnackbar(`Added ${recipe.title} to ${selectedDay} ${selectedMeal}`, 'success');
+    },
+    [selectedDay, selectedMeal, setWeekMenu, showSnackbar]
+  );
 
-  const handleRemoveRecipe = (day: string, meal: 'dinner') => {
-    setWeekMenu((prev) => {
-      const newMenu = { ...prev };
-      if (newMenu[day]) {
-        delete newMenu[day][meal];
-        if (Object.keys(newMenu[day]).length === 0) {
-          delete newMenu[day];
+  const handleRemoveRecipe = useCallback(
+    (day: string, meal: 'breakfast' | 'lunch' | 'dinner') => {
+      setWeekMenu((prev) => {
+        const newMenu = { ...prev };
+        if (newMenu[day]) {
+          delete newMenu[day][meal];
+          if (Object.keys(newMenu[day]).length === 0) {
+            delete newMenu[day];
+          }
         }
-      }
-      return newMenu;
-    });
-  };
-
-  const getShoppingList = () => {
-    const aggregateMap = new Map<string, { name: string; unit?: string; quantity: number }>();
-    Object.values(weekMenu).forEach((dayMenu) => {
-      Object.values(dayMenu).forEach((recipe) => {
-        if (recipe) {
-          recipe.ingredients.forEach((ing: RecipeIngredient) => {
-            const key = `${(ing.unit || '').toLowerCase()}|${ing.name.toLowerCase()}`;
-            const current = aggregateMap.get(key) || {
-              name: ing.name,
-              unit: ing.unit,
-              quantity: 0,
-            };
-            const addQty = ing.quantity !== undefined ? ing.quantity : 1;
-            current.quantity += addQty;
-            aggregateMap.set(key, current);
-          });
-        }
+        return newMenu;
       });
-    });
-    // Convert to strings like "3 cups flour" or "6 eggs"
-    const list = Array.from(aggregateMap.values()).map((item) => {
-      const qtyStr = item.quantity ? `${item.quantity} ` : '';
-      const unitStr = item.unit ? `${item.unit} ` : '';
-      return `${qtyStr}${unitStr}${item.name}`.trim();
-    });
-    return list;
-  };
+      showSnackbar('Recipe removed from menu', 'info');
+    },
+    [setWeekMenu, showSnackbar]
+  );
 
-  // Helper to randomly assign dinners for the entire week
-  const randomizeDinners = () => {
-    setWeekMenu(() => {
-      const newMenu: Record<string, DayMenu> = {};
-      days.forEach((day) => {
-        const randomRecipe = recipes[Math.floor(Math.random() * recipes.length)];
-        newMenu[day] = { dinner: randomRecipe };
-      });
-      return newMenu;
-    });
-  };
+  const handleGenerateRandomMenu = useCallback(
+    (excludedDays: string[], excludedMeals: string[], excludedSlots: Set<string>) => {
+      const generatedMenu = generateRandomMenu(
+        recipes,
+        days,
+        meals,
+        {
+          excludedDays,
+          excludedMeals,
+          excludedSlots,
+        },
+        weekMenu
+      );
+      setWeekMenu(generatedMenu);
+      showSnackbar('Random menu generated successfully!', 'success');
+    },
+    [days, meals, weekMenu, setWeekMenu, showSnackbar]
+  );
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -111,29 +123,23 @@ const WeeklyMenu: React.FC = () => {
           Weekly Menu Planner
         </Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button
+            variant="outlined"
+            startIcon={<ShuffleIcon />}
+            onClick={() => setRandomMenuDialogOpen(true)}
+          >
+            Random Generate
+          </Button>
           <Button variant="outlined" startIcon={<PrintIcon />} onClick={() => window.print()}>
             Print Menu
           </Button>
           <Button
             variant="contained"
-            onClick={() => {
-              const list = getShoppingList();
-              const listText = list.join('\n');
-              navigator.clipboard.writeText(listText);
-              alert('Shopping list copied to clipboard!');
-            }}
+            startIcon={<ShoppingCartIcon />}
+            onClick={() => setShoppingListOpen(true)}
+            disabled={shoppingListRecipes.length === 0}
           >
-            Generate Shopping List
-          </Button>
-
-          {/* New button to auto-plan dinners */}
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={randomizeDinners}
-            startIcon={<ShuffleIcon />}
-          >
-            Randomize Dinners
+            Shopping List ({shoppingListRecipes.length})
           </Button>
         </Box>
       </Box>
@@ -210,7 +216,11 @@ const WeeklyMenu: React.FC = () => {
             }}
           >
             {recipes.map((recipe) => (
-              <Box key={recipe.id} onClick={() => handleSelectRecipe(recipe)}>
+              <Box
+                key={recipe.id}
+                onClick={() => handleSelectRecipe(recipe)}
+                sx={{ cursor: 'pointer' }}
+              >
                 <RecipeCard recipe={recipe} />
               </Box>
             ))}
@@ -218,14 +228,29 @@ const WeeklyMenu: React.FC = () => {
         </DialogContent>
       </Dialog>
 
+      <ShoppingList
+        open={shoppingListOpen}
+        onClose={() => setShoppingListOpen(false)}
+        recipes={shoppingListRecipes}
+      />
+
+      <RandomMenuDialog
+        open={randomMenuDialogOpen}
+        onClose={() => setRandomMenuDialogOpen(false)}
+        onGenerate={handleGenerateRandomMenu}
+        days={days}
+        meals={meals}
+        existingMenu={weekMenu}
+      />
+
       {Object.keys(weekMenu).length > 0 && (
         <Paper sx={{ mt: 4, p: 3 }}>
           <Typography variant="h6" gutterBottom>
-            Shopping List Preview
+            Menu Summary
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {getShoppingList().slice(0, 5).join(', ')}
-            {getShoppingList().length > 5 && ` and ${getShoppingList().length - 5} more items...`}
+            You have {shoppingListRecipes.length} recipe
+            {shoppingListRecipes.length !== 1 ? 's' : ''} planned for this week.
           </Typography>
         </Paper>
       )}

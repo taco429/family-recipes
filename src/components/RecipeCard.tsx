@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -6,6 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AddIcon from '@mui/icons-material/Add';
@@ -14,15 +15,18 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { Recipe } from '../data/types';
+import { useFavoritesContext } from '../context/FavoritesContext';
 
 interface RecipeCardProps {
   recipe: Recipe;
   onAddToMenu?: (recipe: Recipe) => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
+const RecipeCard: React.FC<RecipeCardProps> = React.memo(({ recipe, onAddToMenu }) => {
   const navigate = useNavigate();
+  const { isFavorite, toggleFavorite } = useFavoritesContext();
   const {
+    id,
     title,
     description,
     cookTime,
@@ -30,6 +34,15 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
     style,
     imageUrl = 'https://source.unsplash.com/random/400x300/?food',
   } = recipe;
+
+  const handleFavoriteClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      toggleFavorite(id);
+    },
+    [id, toggleFavorite]
+  );
+
   const getDifficultyColor = (level: string) => {
     switch (level) {
       case 'Easy':
@@ -88,8 +101,12 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
         </Box>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton
+          aria-label={isFavorite(id) ? 'remove from favorites' : 'add to favorites'}
+          onClick={handleFavoriteClick}
+          color={isFavorite(id) ? 'error' : 'default'}
+        >
+          {isFavorite(id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
@@ -106,6 +123,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onAddToMenu }) => {
       </CardActions>
     </Card>
   );
-};
+});
+
+RecipeCard.displayName = 'RecipeCard';
 
 export default RecipeCard;
