@@ -101,11 +101,55 @@ const BrowseRecipes: React.FC = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Browse Recipes
-      </Typography>
+      <Box
+        sx={{
+          backgroundColor: '#000000',
+          color: '#FFFFFF',
+          padding: 3,
+          marginBottom: 4,
+          border: '6px solid #FF0000',
+          transform: 'skewX(-1deg)',
+        }}
+      >
+        <Typography
+          variant="h3"
+          component="h1"
+          sx={{
+            fontFamily: '"Impact", "Arial Black", sans-serif',
+            fontSize: { xs: '2rem', md: '3rem' },
+            letterSpacing: '0.1em',
+            textShadow: '3px 3px 0px #FF0000, 6px 6px 0px #FFFF00',
+            transform: 'skewX(1deg)',
+          }}
+        >
+          {'/// BROWSE_RECIPES ///'}
+        </Typography>
+      </Box>
 
-      <Box sx={{ mb: 4, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <Box
+        sx={{
+          mb: 4,
+          display: 'flex',
+          gap: 2,
+          flexWrap: 'wrap',
+          backgroundColor: '#FFFF00',
+          border: '4px solid #000000',
+          padding: 2,
+          position: 'relative',
+          '&::before': {
+            content: '"FILTERS:"',
+            position: 'absolute',
+            top: '-16px',
+            left: '16px',
+            backgroundColor: '#FF0000',
+            color: '#FFFFFF',
+            padding: '2px 8px',
+            fontSize: '0.875rem',
+            fontWeight: 900,
+            border: '3px solid #000000',
+          },
+        }}
+      >
         <TextField
           sx={{ flexGrow: 1, minWidth: 250 }}
           placeholder="Search recipes..."
@@ -177,9 +221,28 @@ const BrowseRecipes: React.FC = () => {
         </TextField>
       </Box>
 
-      <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="body1" color="text.secondary">
-          Found {sortedRecipes.length} recipes
+      <Box
+        sx={{
+          mb: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: '#000000',
+          color: '#FFFFFF',
+          padding: 2,
+          border: '3px solid #000000',
+        }}
+      >
+        <Typography
+          variant="body1"
+          sx={{
+            fontFamily: '"Courier New", monospace',
+            fontSize: '1.1rem',
+            fontWeight: 700,
+            color: '#00FF00',
+          }}
+        >
+          &gt; FOUND [{sortedRecipes.length}] RECIPES
         </Typography>
         <FormControlLabel
           control={
@@ -188,9 +251,23 @@ const BrowseRecipes: React.FC = () => {
               onChange={(e) => setShowFavoritesOnly(e.target.checked)}
               icon={<FavoriteIcon />}
               checkedIcon={<FavoriteIcon color="error" />}
+              sx={{
+                color: '#FFFFFF',
+                '&.Mui-checked': {
+                  color: '#FF0000',
+                },
+              }}
             />
           }
-          label="Show favorites only"
+          label="[FAVORITES_ONLY]"
+          sx={{
+            fontFamily: '"Courier New", monospace',
+            fontWeight: 700,
+            color: '#FFFF00',
+            '& .MuiFormControlLabel-label': {
+              marginLeft: 1,
+            },
+          }}
         />
       </Box>
 
@@ -198,7 +275,20 @@ const BrowseRecipes: React.FC = () => {
         sx={{
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-          gap: 3,
+          gap: 4,
+          padding: 3,
+          backgroundColor: '#FFFFFF',
+          border: '4px dashed #000000',
+          position: 'relative',
+          '&::before': {
+            content: '">>>"',
+            position: 'absolute',
+            top: '8px',
+            left: '8px',
+            fontSize: '1.5rem',
+            fontWeight: 900,
+            color: '#FF0000',
+          },
         }}
       >
         {sortedRecipes.map((recipe) => (
