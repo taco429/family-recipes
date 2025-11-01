@@ -84,7 +84,7 @@ test.describe('Family Recipes App', () => {
     
     await searchInput.fill('chicken');
     await expect(page.getByText("Hearty Chicken Soup", { exact: true })).toBeVisible();
-    await expect(page.getByText("Classic Apple Pie")).not.toBeVisible();
+    await expect(page.getByText("Classic Apple Pie", { exact: true })).not.toBeVisible();
   });
 
   test('recipe detail page displays correctly', async ({ page }) => {

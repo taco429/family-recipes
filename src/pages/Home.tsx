@@ -55,7 +55,7 @@ const Home: React.FC = () => {
             transform: 'skewY(-2deg)',
           }}
         >
-          [[ RECIPE ARCHIVE ]]
+          Welcome to Family Recipes
         </Typography>
         <Typography
           variant="body1"
@@ -73,7 +73,7 @@ const Home: React.FC = () => {
             boxShadow: '4px 4px 0px #FF0000',
           }}
         >
-          &gt;&gt; YOUR RECIPES. NO FILLER. NO LIFE STORIES. &lt;&lt;
+          Preserve and share your cherished family recipes
         </Typography>
         <Box
           sx={{

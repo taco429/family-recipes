@@ -122,7 +122,7 @@ const BrowseRecipes: React.FC = () => {
             transform: 'skewX(1deg)',
           }}
         >
-          {'/// BROWSE_RECIPES ///'}
+          Browse Recipes
         </Typography>
       </Box>
 
