@@ -33,7 +33,7 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#2e7d32',
+      main: '#000000',
     },
     secondary: {
       main: '#FF0000',
@@ -259,7 +259,7 @@ function AppContent() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#000000' }}>
         <Toolbar sx={{ minHeight: '80px!important' }}>
           {isMobile && (
             <IconButton
@@ -277,7 +277,6 @@ function AppContent() {
             variant="h4"
             component={Link}
             to="/"
-            aria-label="Family Recipes"
             sx={{
               flexGrow: 1,
               textDecoration: 'none',
@@ -292,7 +291,7 @@ function AppContent() {
               },
             }}
           >
-            [ RECIPE_ARCHIVE ]
+            [ FAMILY_RECIPES ]
           </Typography>
           {!isMobile && (
             <Box sx={{ display: 'flex', gap: 2 }}>

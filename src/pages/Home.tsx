@@ -55,7 +55,7 @@ const Home: React.FC = () => {
             transform: 'skewY(-2deg)',
           }}
         >
-          Welcome to Family Recipes
+          [[ WELCOME TO FAMILY RECIPES ]]
         </Typography>
         <Typography
           variant="body1"
@@ -73,7 +73,7 @@ const Home: React.FC = () => {
             boxShadow: '4px 4px 0px #FF0000',
           }}
         >
-          Preserve and share your cherished family recipes
+          &gt;&gt; PRESERVE AND SHARE YOUR CHERISHED FAMILY RECIPES WITH LOVED ONES &lt;&lt;
         </Typography>
         <Box
           sx={{
