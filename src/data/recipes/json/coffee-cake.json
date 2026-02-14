@@ -1,0 +1,33 @@
+{
+  "id": "coffee-cake",
+  "title": "Coffee Cake",
+  "description": "A classic crumb-topped coffee cake with warm cinnamon, allspice, and clove. The crumbly shortening topping makes it irresistible.",
+  "cookTime": "20 min",
+  "prepTime": "15 min",
+  "servings": 12,
+  "difficulty": "Easy",
+  "style": "American",
+  "category": "breakfast",
+  "ingredients": [
+    "2 cups all-purpose flour",
+    "2 teaspoons cinnamon",
+    "1 teaspoon allspice",
+    "1 teaspoon ground clove",
+    "1 1/2 cups sugar",
+    "1/2 cup Crisco shortening",
+    "1 cup milk",
+    "1 teaspoon vinegar",
+    "1 teaspoon baking soda",
+    "1 egg"
+  ],
+  "instructions": [
+    "Preheat oven to 350°F and grease a 9x13 baking pan.",
+    "In a large bowl, mix together flour, cinnamon, allspice, ground clove, and sugar.",
+    "Cut in shortening until the mixture is crumbly.",
+    "Remove 3/4 cup of the crumb mixture and set aside for topping.",
+    "Make sour milk by stirring vinegar into milk and letting it sit for a few minutes.",
+    "Add sour milk, baking soda, and egg to the remaining crumb mixture. Stir until just combined.",
+    "Pour batter into the prepared pan and sprinkle the reserved crumb topping evenly over the top.",
+    "Bake at 350°F for 20 minutes, or until a toothpick inserted in the center comes out clean."
+  ]
+}

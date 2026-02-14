@@ -1,0 +1,31 @@
+{
+  "id": "no-egg-casserole",
+  "title": "No Egg Casserole",
+  "description": "A hearty egg-free breakfast casserole loaded with sausage, hash browns, and a creamy cheddar cheese mixture. Perfect for feeding a crowd.",
+  "cookTime": "60 min",
+  "prepTime": "20 min",
+  "servings": 10,
+  "difficulty": "Easy",
+  "style": "American",
+  "category": "breakfast",
+  "ingredients": [
+    "2 pounds sausage",
+    "2 cups shredded cheddar cheese",
+    "1 can cream of chicken soup (10.75 oz)",
+    "1 cup sour cream",
+    "8 oz French onion dip",
+    "2 teaspoons garlic salt",
+    "1 tablespoon dry chopped onion",
+    "30 oz package frozen hash browns, thawed"
+  ],
+  "instructions": [
+    "Brown sausage in a large skillet, breaking it into crumbles. Drain fat and let cool.",
+    "Preheat oven to 350°F and grease a 9x13 baking dish.",
+    "In a large bowl, mix together shredded cheddar, cream of chicken soup, sour cream, French onion dip, garlic salt, and dry chopped onion.",
+    "Fold the thawed hash browns into the cheese mixture.",
+    "Spread half of the hash brown mixture into the prepared baking dish.",
+    "Sprinkle the browned sausage evenly over the layer.",
+    "Top with the remaining hash brown mixture and spread evenly.",
+    "Bake at 350°F for 1 hour until golden and bubbly."
+  ]
+}

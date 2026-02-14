@@ -1,0 +1,26 @@
+{
+  "id": "pizza-burgers",
+  "title": "Pizza Burgers",
+  "description": "A cheesy, saucy ground beef mixture with melted Velveeta and pizza flavors. Pile it on hamburger buns for an easy crowd-pleasing dinner.",
+  "cookTime": "20 min",
+  "prepTime": "10 min",
+  "servings": 12,
+  "difficulty": "Easy",
+  "style": "American",
+  "category": "dinner",
+  "ingredients": [
+    "2 lbs ground beef",
+    "1 teaspoon oregano",
+    "1 onion, diced",
+    "1 tablespoon green pepper, diced (optional)",
+    "1 lb Velveeta cheese, cubed",
+    "1 can spaghetti sauce with meat (11 oz)",
+    "1 can tomato paste (6 oz)"
+  ],
+  "instructions": [
+    "Brown ground beef with oregano, diced onion, and green pepper in a large skillet. Drain fat.",
+    "Add cubed Velveeta cheese to the skillet and stir over low heat until melted.",
+    "Stir in spaghetti sauce and tomato paste. Mix until well combined and heated through.",
+    "Serve on hamburger buns."
+  ]
+}

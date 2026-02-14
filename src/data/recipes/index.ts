@@ -1,6 +1,7 @@
 import { Recipe } from '../../models/Recipe';
 import aunties from './json/aunties-chocolate-chip-cookies.json';
 import brothers from './json/brothers-fish-tacos.json';
+import coffeeCake from './json/coffee-cake.json';
 import cousins from './json/cousins-beef-stew.json';
 import dads from './json/dads-pancakes.json';
 import grandmas from './json/grandmas-apple-pie.json';
@@ -9,6 +10,8 @@ import grandpasToast from './json/grandpas-french-toast.json';
 import mamas from './json/mamas-cornbread.json';
 import moms from './json/moms-chicken-soup.json';
 import nanas from './json/nanas-lasagna.json';
+import noEggCasserole from './json/no-egg-casserole.json';
+import pizzaBurgers from './json/pizza-burgers.json';
 import sisters from './json/sisters-banana-bread.json';
 import spicyBuffaloChili from './json/spicy-buffalo-white-chicken-chili.json';
 import uncles from './json/uncles-bbq-ribs.json';
@@ -16,6 +19,7 @@ import uncles from './json/uncles-bbq-ribs.json';
 const jsonRecipes = [
   aunties,
   brothers,
+  coffeeCake,
   cousins,
   dads,
   grandmas,
@@ -24,6 +28,8 @@ const jsonRecipes = [
   mamas,
   moms,
   nanas,
+  noEggCasserole,
+  pizzaBurgers,
   sisters,
   spicyBuffaloChili,
   uncles,
