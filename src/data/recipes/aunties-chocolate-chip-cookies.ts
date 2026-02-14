@@ -2,6 +2,7 @@ import { Recipe } from '../types';
 
 export const auntiesChocolateChipCookies: Recipe = {
   id: 'aunties-chocolate-chip-cookies',
+  contributor: 'test',
   title: 'Perfect Chocolate Chip Cookies',
   description:
     'Soft, chewy chocolate chip cookies with crispy edges - the perfect balance of textures that made Auntie famous at every bake sale.',

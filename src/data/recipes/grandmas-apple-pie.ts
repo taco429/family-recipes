@@ -2,6 +2,7 @@ import { Recipe } from '../types';
 
 export const grandmasApplePie: Recipe = {
   id: 'grandmas-apple-pie',
+  contributor: 'test',
   title: 'Classic Apple Pie',
   description:
     'A classic apple pie recipe passed down through generations, featuring a flaky crust and perfectly spiced apple filling.',

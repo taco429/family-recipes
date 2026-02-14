@@ -10,6 +10,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AddIcon from '@mui/icons-material/Add';
+import PersonIcon from '@mui/icons-material/Person';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
@@ -181,6 +182,19 @@ const RecipeCard: React.FC<RecipeCardProps> = React.memo(({ recipe, onAddToMenu 
               fontWeight: 700,
             }}
           />
+          {recipe.contributor && (
+            <Chip
+              icon={<PersonIcon />}
+              label={`By ${recipe.contributor}`}
+              size="small"
+              sx={{
+                backgroundColor: '#FF00FF',
+                color: '#FFFFFF',
+                border: '2px solid #000000',
+                fontWeight: 700,
+              }}
+            />
+          )}
         </Box>
       </CardContent>
       <CardActions

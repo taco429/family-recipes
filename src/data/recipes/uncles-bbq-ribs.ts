@@ -2,6 +2,7 @@ import { Recipe } from '../types';
 
 export const unclesBbqRibs: Recipe = {
   id: 'uncles-bbq-ribs',
+  contributor: 'test',
   title: 'Smoky BBQ Ribs',
   description:
     "Tender, fall-off-the-bone ribs with a secret family BBQ sauce that's been perfected over decades.",

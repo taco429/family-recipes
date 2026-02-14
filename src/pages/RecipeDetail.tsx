@@ -21,6 +21,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import PrintIcon from '@mui/icons-material/Print';
+import PersonIcon from '@mui/icons-material/Person';
 import PublicIcon from '@mui/icons-material/Public';
 import { recipes } from '../data/recipes';
 import { useFavorites } from '../hooks/useFavorites';
@@ -195,6 +196,18 @@ const RecipeDetail: React.FC = () => {
             <Chip label={recipe.difficulty} color={getDifficultyColor(recipe.difficulty)} />
             <Chip icon={<PublicIcon />} label={recipe.style} color={getStyleColor(recipe.style)} />
             <Chip label={recipe.category} variant="outlined" />
+            {recipe.contributor && (
+              <Chip
+                icon={<PersonIcon />}
+                label={`By ${recipe.contributor}`}
+                sx={{
+                  backgroundColor: '#FF00FF',
+                  color: '#FFFFFF',
+                  border: '2px solid #000000',
+                  fontWeight: 700,
+                }}
+              />
+            )}
           </Box>
 
           <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>

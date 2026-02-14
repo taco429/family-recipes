@@ -13,6 +13,7 @@ export interface RecipeData {
   ingredients: Ingredient[];
   instructions: string[];
   imageUrl?: string;
+  contributor: string;
 }
 
 export class Recipe implements RecipeData {
@@ -28,6 +29,7 @@ export class Recipe implements RecipeData {
   ingredients!: Ingredient[];
   instructions!: string[];
   imageUrl?: string;
+  contributor!: string;
 
   constructor(data: RecipeData) {
     Object.assign(this, data);
@@ -185,6 +187,7 @@ export class Recipe implements RecipeData {
       ingredients,
       instructions: data.instructions,
       imageUrl: data.imageUrl,
+      contributor: data.contributor ?? '',
     };
     return new Recipe(recipeData);
   }

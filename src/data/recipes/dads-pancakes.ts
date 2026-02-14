@@ -2,6 +2,7 @@ import { Recipe } from '../types';
 
 export const dadsPancakes: Recipe = {
   id: 'dads-pancakes',
+  contributor: 'test',
   title: 'Fluffy Buttermilk Pancakes',
   description:
     'Fluffy buttermilk pancakes that are a weekend tradition. The secret is in the technique!',

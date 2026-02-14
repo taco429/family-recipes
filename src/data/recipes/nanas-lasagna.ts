@@ -2,6 +2,7 @@ import { Recipe } from '../types';
 
 export const nanasLasagna: Recipe = {
   id: 'nanas-lasagna',
+  contributor: 'test',
   title: 'Classic Meat Lasagna',
   description:
     'A rich, meaty lasagna with layers of cheese and homemade sauce. Perfect for feeding a crowd.',

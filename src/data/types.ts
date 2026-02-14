@@ -28,4 +28,5 @@ export interface Recipe {
   ingredients: Ingredient[];
   instructions: string[];
   category: RecipeCategory | string; // Allow both enum and string for flexibility
+  contributor: string;
 }
