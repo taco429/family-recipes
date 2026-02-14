@@ -1,5 +1,6 @@
 import { Ingredient } from '../data/types';
 import { normalizeUnit, getDisplayUnit } from './unitNormalizer';
+import { getConversionGroup, toBaseUnits, toBestDisplayUnit } from './unitConverter';
 
 /**
  * Formats an ingredient object into a human-readable string for display
@@ -75,13 +76,19 @@ function formatQuantity(quantity: number): string {
     return Math.round(quantity).toString();
   }
 
-  // Common fractions to check
+  // Common fractions to check (ordered by size for best matching)
   const fractions: Array<[number, string]> = [
+    [0.125, '1/8'],
+    [0.167, '1/6'],
     [0.25, '1/4'],
     [0.333, '1/3'],
+    [0.375, '3/8'],
     [0.5, '1/2'],
+    [0.625, '5/8'],
     [0.667, '2/3'],
     [0.75, '3/4'],
+    [0.833, '5/6'],
+    [0.875, '7/8'],
   ];
 
   // Check for whole + fraction combinations first
@@ -112,8 +119,17 @@ function formatQuantity(quantity: number): string {
 }
 
 /**
- * Aggregates ingredients from multiple recipes and formats them for shopping
- * Consolidates quantities by item and unit, showing totals for the weekly menu
+ * Aggregates ingredients from multiple recipes and formats them for shopping.
+ *
+ * Consolidation strategy:
+ * 1. Group all ingredients by item name
+ * 2. For each item, group quantities by *conversion group* (not just unit).
+ *    This means "2 cups flour" + "4 tbsp flour" get combined because cups and
+ *    tbsp are both US Volume units.
+ * 3. Convert all quantities to the group's base unit, sum them, then convert
+ *    back to the most readable display unit.
+ * 4. Units that aren't part of any conversion group (e.g., "can", "package")
+ *    are still consolidated by their canonical unit, as before.
  */
 export function aggregateIngredientsForShopping(
   recipes: { ingredients: Ingredient[] }[]
@@ -134,7 +150,7 @@ export function aggregateIngredientsForShopping(
   // Format each group with consolidated quantities
   const shoppingList: string[] = [];
 
-  ingredientMap.forEach((ingredients, itemKey) => {
+  ingredientMap.forEach((ingredients) => {
     // Use the original casing from the first occurrence
     const displayName = ingredients[0].item;
 
@@ -142,23 +158,55 @@ export function aggregateIngredientsForShopping(
       // Single occurrence - show as-is
       shoppingList.push(formatIngredientForShopping(ingredients[0]));
     } else {
-      // Multiple occurrences - consolidate by unit
-      const byUnit = new Map<string, number[]>();
+      // Multiple occurrences - consolidate by conversion group
+      // Key format: "__group__<baseUnit>" for convertible units,
+      //             "__unit__<canonical>" for non-convertible units,
+      //             "__no_unit__" for unitless items
+      const groups = new Map<
+        string,
+        { baseUnit: string | null; quantities: number[]; canonicalUnit: string }
+      >();
       const stringQuantities: string[] = [];
-      const noUnit: number[] = [];
 
       ingredients.forEach((ing) => {
         if (typeof ing.quantity === 'number') {
           if (ing.unit) {
-            // Normalize unit for matching (handles singular/plural)
-            const unitKey = normalizeUnit(ing.unit);
-            if (!byUnit.has(unitKey)) {
-              byUnit.set(unitKey, []);
+            const canonical = normalizeUnit(ing.unit);
+            const convGroup = getConversionGroup(canonical);
+
+            if (convGroup) {
+              // Unit belongs to a conversion group - convert to base units
+              const groupKey = `__group__${convGroup.baseUnit}`;
+              if (!groups.has(groupKey)) {
+                groups.set(groupKey, {
+                  baseUnit: convGroup.baseUnit,
+                  quantities: [],
+                  canonicalUnit: canonical,
+                });
+              }
+              const base = toBaseUnits(ing.quantity, canonical);
+              if (base) {
+                groups.get(groupKey)!.quantities.push(base.quantity);
+              }
+            } else {
+              // Not in a conversion group - group by canonical unit (e.g., "can", "package")
+              const groupKey = `__unit__${canonical}`;
+              if (!groups.has(groupKey)) {
+                groups.set(groupKey, {
+                  baseUnit: null,
+                  quantities: [],
+                  canonicalUnit: canonical,
+                });
+              }
+              groups.get(groupKey)!.quantities.push(ing.quantity);
             }
-            byUnit.get(unitKey)!.push(ing.quantity);
           } else {
             // No unit (like eggs, apples)
-            noUnit.push(ing.quantity);
+            const groupKey = '__no_unit__';
+            if (!groups.has(groupKey)) {
+              groups.set(groupKey, { baseUnit: null, quantities: [], canonicalUnit: '' });
+            }
+            groups.get(groupKey)!.quantities.push(ing.quantity);
           }
         } else {
           // String quantities like "to taste", "pinch"
@@ -166,21 +214,27 @@ export function aggregateIngredientsForShopping(
         }
       });
 
-      // Format consolidated quantities with units
-      byUnit.forEach((quantities, unitKey) => {
-        const total = quantities.reduce((sum, q) => sum + q, 0);
-        const formattedTotal = formatQuantity(total);
-        // Get proper display form (handles singular/plural automatically)
-        const displayUnit = getDisplayUnit(unitKey, total);
-        shoppingList.push(`${formattedTotal} ${displayUnit} ${displayName}`);
-      });
+      // Format each consolidated group
+      groups.forEach((group) => {
+        const total = group.quantities.reduce((sum, q) => sum + q, 0);
 
-      // Format items without units
-      if (noUnit.length > 0) {
-        const total = noUnit.reduce((sum, q) => sum + q, 0);
-        const formattedTotal = formatQuantity(total);
-        shoppingList.push(`${formattedTotal} ${displayName}`);
-      }
+        if (group.baseUnit) {
+          // Convertible group: convert from base units to best display unit
+          const best = toBestDisplayUnit(total, group.baseUnit);
+          const formattedTotal = formatQuantity(best.quantity);
+          const displayUnit = getDisplayUnit(best.unit, best.quantity);
+          shoppingList.push(`${formattedTotal} ${displayUnit} ${displayName}`);
+        } else if (group.canonicalUnit) {
+          // Non-convertible unit: sum and display with canonical unit
+          const formattedTotal = formatQuantity(total);
+          const displayUnit = getDisplayUnit(group.canonicalUnit, total);
+          shoppingList.push(`${formattedTotal} ${displayUnit} ${displayName}`);
+        } else {
+          // No unit
+          const formattedTotal = formatQuantity(total);
+          shoppingList.push(`${formattedTotal} ${displayName}`);
+        }
+      });
 
       // Add unique string quantities (to taste, pinch, etc.)
       const uniqueStringQuantities = Array.from(new Set(stringQuantities));
