@@ -8,12 +8,12 @@ test('renders the app without crashing', () => {
 
 test('renders the app header with site title', () => {
   render(<App />);
-  const titleElement = screen.getByRole('link', { name: /family.?recipes/i });
+  const titleElement = screen.getByRole('link', { name: /recipes/i });
   expect(titleElement).toBeInTheDocument();
 });
 
 test('renders the home page welcome message', async () => {
   render(<App />);
-  const welcomeElement = await screen.findByText(/welcome to family recipes/i);
+  const welcomeElement = await screen.findByText(/welcome to recipes/i);
   expect(welcomeElement).toBeInTheDocument();
 });

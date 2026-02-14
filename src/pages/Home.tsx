@@ -55,25 +55,7 @@ const Home: React.FC = () => {
             transform: 'skewY(-2deg)',
           }}
         >
-          [[ WELCOME TO FAMILY RECIPES ]]
-        </Typography>
-        <Typography
-          variant="body1"
-          paragraph
-          sx={{
-            fontFamily: '"Courier New", monospace',
-            fontSize: '1.1rem',
-            fontWeight: 700,
-            backgroundColor: '#000000',
-            color: '#00FF00',
-            padding: 2,
-            border: '3px solid #000000',
-            maxWidth: '600px',
-            margin: '0 auto 24px',
-            boxShadow: '4px 4px 0px #FF0000',
-          }}
-        >
-          &gt;&gt; PRESERVE AND SHARE YOUR CHERISHED FAMILY RECIPES WITH LOVED ONES &lt;&lt;
+          [[ WELCOME TO RECIPES ]]
         </Typography>
         <Box
           sx={{

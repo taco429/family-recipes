@@ -4,15 +4,12 @@ import { TextEncoder, TextDecoder } from 'node:util';
 test.describe('Family Recipes App', () => {
   test('has title', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Family Recipes/);
+    await expect(page).toHaveTitle(/Recipes/);
   });
 
   test('displays welcome message on home page', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText(/welcome to family recipes/i)).toBeVisible();
-    await expect(
-      page.getByText(/preserve and share your cherished family recipes/i)
-    ).toBeVisible();
+    await expect(page.getByText(/welcome to recipes/i)).toBeVisible();
   });
 
   test('navigation menu works on desktop', async ({ page, isMobile }) => {
@@ -39,7 +36,7 @@ test.describe('Family Recipes App', () => {
     await expect(page.getByText(/browse.?recipes/i)).toBeVisible();
 
     // Navigate back to home
-    await page.getByRole('link', { name: /family.?recipes/i }).click();
+    await page.getByRole('link', { name: /^\[?\s*recipes\s*\]?$/i }).click();
     await page.waitForLoadState('networkidle');
 
     // Navigate to Weekly Menu

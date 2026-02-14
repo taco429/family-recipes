@@ -291,7 +291,7 @@ function AppContent() {
               },
             }}
           >
-            [ FAMILY_RECIPES ]
+            [ RECIPES ]
           </Typography>
           {!isMobile && (
             <Box sx={{ display: 'flex', gap: 2 }}>
