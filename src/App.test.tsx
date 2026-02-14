@@ -8,7 +8,7 @@ test('renders the app without crashing', () => {
 
 test('renders the app header with site title', () => {
   render(<App />);
-  const titleElement = screen.getByRole('link', { name: /recipes/i });
+  const titleElement = screen.getByRole('link', { name: /^\[\s*recipes\s*\]$/i });
   expect(titleElement).toBeInTheDocument();
 });
 
